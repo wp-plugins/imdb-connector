@@ -11,7 +11,7 @@ A neat plugin that allows you to easily get movie details from IMDb.com.
 
 == Description ==
 
-**IMDb Connector** is a plugin that allows you to easily access the [IMDb.com](http://ww.imdb.com) database through the [API provided by omdbapi.com](http://www.omdbapi.com) and get details for a specific movie (for a full list of the returned details, please see [Installation > PHP functions]()).
+**IMDb Connector** is a plugin that allows you to easily access the [IMDb.com](http://ww.imdb.com) database through the [API provided by omdbapi.com](http://www.omdbapi.com) and get details for a specific movie (for a full list of the returned details, please see [Installation > PHP functions](http://wordpress.org/plugins/imdb-connector/installation/)).
 
 So far, the plugin comes with the following features:
 
@@ -19,6 +19,8 @@ So far, the plugin comes with the following features:
 * **PHP functions** that allows theme/plugin developers to easily parse information for a specific movie,
 * [**Shortcodes**](http://codex.wordpress.org/Shortcode_API) which you can use to display one or more details about a movie inside your post or page,
 * and a **settings page** that lets you (de)activate features and customize the way IMDb Connector works.
+
+*For instructions on how to use, please see [Installation](http://wordpress.org/plugins/imdb-connector/installation/)*.
 
 If you have any other ideas for features, please don't hesitate to submit them by [sending me an e-mail](mailto:kolja.nolte@gmail.com) and I'll try my best to implement it in the next version. Your WP.org username will be added to the plugin's contributor list, of course.
 
@@ -31,6 +33,10 @@ If you have any other ideas for features, please don't hesitate to submit them b
 For more detailed instructions and additional information, please see the official documentary on [www.koljanolte.com/wordpress/plugins/imdb-connector/](http://www.koljanolte.com/wordpress/plugins/imdb-connector/).
 
 = Installation =
+
+1. Install IMDb Connector either through WordPress' native plugin installer (Plugins > Install) or copy the "imdb-connector" folder into your /wp-content/plugins/ directory.
+2. Activate the plugin in the plugin section of your admin interface.
+3. Go to Settings > IMDb Connector to customize the plugin as desired.
 
 = Usage =
 IMDb Connector can be used in several different ways:
@@ -132,6 +138,9 @@ Check if IMDb has a the movie that has been submitted through a form and display
 
 = Shortcodes =
 IMDb Connector allows you use shortcodes to display movie details within your post or page by using `[imdb_movie_detail title="" detail=""]` whereas *title* is the title of the targeted movie and *detail* the movie detail that is supposed to be displayed.
+
+= Change the settings =
+You can customize the way IMDb Connector works by going to *Settings > IMDb Connector* within the admin area of your WordPress installation.
 
 == Frequently Asked Questions ==
 
