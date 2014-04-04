@@ -1,0 +1,173 @@
+#
+# Translators:
+# thaikolja <puhbaer3@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugin: IMDb Connector\n"
+"POT-Creation-Date: 2014-04-05 00:24+0700\n"
+"PO-Revision-Date: 2014-04-05 00:24+0700\n"
+"Last-Translator: Kolja Nolte <kolja.nolte@gmail.com>\n"
+"Language-Team: Kolja Nolte <kolja.nolte@gmail.com>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: imdb-connector.php:279
+msgid "IMDb Connector settings"
+msgstr "Einstellungen"
+
+#: imdb-connector.php:301
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: imdb-connector.php:301
+msgid "IMDb Connector"
+msgstr "IMDb Connector"
+
+#: imdb-connector.php:307
+msgid "Caching"
+msgstr "Zwischenspeichern"
+
+#: imdb-connector.php:311 imdb-connector.php:327 imdb-connector.php:343
+msgid "On"
+msgstr "An"
+
+#: imdb-connector.php:313 imdb-connector.php:329 imdb-connector.php:345
+msgid "Off"
+msgstr "Aus"
+
+#: imdb-connector.php:314 imdb-connector.php:330 imdb-connector.php:346
+msgid "Default"
+msgstr "Standard"
+
+#: imdb-connector.php:318
+msgid ""
+"Allows IMDb Connector to cache movie details and covers for faster access."
+msgstr ""
+"Erlaubt IMDb Connector, Filmdetails und Covers zwischenzuspeichern, um "
+"schneller darauf zugreifen zu können."
+
+#: imdb-connector.php:323
+msgid "Shortcodes"
+msgstr "Shortcodes"
+
+#: imdb-connector.php:334
+msgid ""
+"Provides <a href=\"http://codex.wordpress.org/Shortcode_API\" target=\"_blank"
+"\">shortcodes</a> to easily insert movie details into your posts or pages."
+"<br />To learn how, please see the <a href=\"www.koljanolte.com/wordpress/"
+"plugins/imdb-connector/\" target=\"_blank\" title=\"See online documentary"
+"\">online documentary.</a>"
+msgstr ""
+"Stellt <a href=\"http://codex.wordpress.org/Shortcode_API\" target=\"_blank"
+"\">Shortcodes</a> zur Verfügung, mit denen leicht Filmdetails in Beiträge "
+"oder Seiten eingefügt werden können. Für eine detaillierte Erklärung siehe "
+"die <a href=\"www.koljanolte.com/wordpress/plugins/imdb-connector/\" target="
+"\"_blank\" title=\"Offizielle Anleitung\">offizielle Anleitung</a>."
+
+#: imdb-connector.php:339
+msgid "Use default styles"
+msgstr "Standard"
+
+#: imdb-connector.php:350
+msgid ""
+"Makes IMDb Connector use its default CSS styles for widgets etc.<br /"
+">defined in <code>styles.css</code>."
+msgstr ""
+"Lässt IMDb Connector die Standard-CSS-Stile für Widgets usw. benutzen, die "
+"in der Datei <code>styles.css</code> definiert sind."
+
+#: imdb-connector.php:355
+msgid ""
+"Do you speak more than one language? Help making IMDb Connector<br />easier "
+"to use for foreign users by <a href=\"https://www.transifex.com/projects/p/"
+"plugin-imdb-connector/\" target=\"_blank\">translating the plugin on "
+"Transifex.</a>"
+msgstr ""
+"Sprichst du mehr als eine Sprache? <a href=\"https://www.transifex.com/"
+"projects/p/plugin-imdb-connector/\" target=\"_blank\">Hilf mit, IMDb "
+"Connector zu übersetzen</a> und es so einfacher für ausländische Benutzer zu "
+"machen."
+
+#: imdb-connector.php:360
+msgid "Save changes"
+msgstr "Änderungen speichern"
+
+#: widgets/imdb_movie.php:10 widgets/imdb_movie.php:28
+msgid "IMDB movie"
+msgstr "IMDb-Film"
+
+#: widgets/imdb_movie.php:28
+msgid "Displays a specific movie and its details."
+msgstr "Gibt einen Film und dessen Informationen aus."
+
+#: widgets/imdb_movie.php:129
+msgid "Widget title"
+msgstr "Widgettitel"
+
+#: widgets/imdb_movie.php:136
+msgid "Movie title"
+msgstr "Filmtitel"
+
+#: widgets/imdb_movie.php:138
+msgid "The title of the movie that should be used."
+msgstr "Der Titel des Films, dessen Informationen angezeigt werden sollen."
+
+#: widgets/imdb_movie.php:144
+msgid "Show cover"
+msgstr "Cover anzeigen"
+
+#: widgets/imdb_movie.php:152
+msgid "Cover width and height"
+msgstr "Coverabmessungen"
+
+#: widgets/imdb_movie.php:154
+msgid "E.g. 100x150"
+msgstr "Z.B. 100x150"
+
+#: widgets/imdb_movie.php:160
+msgid "Cover link"
+msgstr "Coverlink"
+
+#: widgets/imdb_movie.php:167
+msgid "Show title"
+msgstr "Titel anzeigen"
+
+#: widgets/imdb_movie.php:175
+msgid "Title position"
+msgstr "Titelposition"
+
+#: widgets/imdb_movie.php:179
+msgid "Above the cover"
+msgstr "Über dem Cover"
+
+#: widgets/imdb_movie.php:183
+msgid "Below the cover"
+msgstr "Unter dem Cover"
+
+#: widgets/imdb_movie.php:192
+msgid "Show plot"
+msgstr "Inhaltsangabe anzeigen"
+
+#: widgets/imdb_movie.php:196
+msgid "Short plot"
+msgstr "Kurze Inhaltsangabe"
+
+#: widgets/imdb_movie.php:201
+msgid "Long plot"
+msgstr "Lange Inhaltsangabe"
+
+#: widgets/imdb_movie.php:206
+msgid "None"
+msgstr "Keine"
+
+#: widgets/imdb_movie.php:217
+msgid "Bottom text"
+msgstr "Fußzeile"
