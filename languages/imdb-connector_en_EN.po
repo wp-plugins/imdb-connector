@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: IMDb Connector\n"
-"POT-Creation-Date: 2014-04-05 00:23+0700\n"
-"PO-Revision-Date: 2014-04-05 00:23+0700\n"
+"POT-Creation-Date: 2014-04-17 12:02+0700\n"
+"PO-Revision-Date: 2014-04-17 12:02+0700\n"
 "Last-Translator: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language-Team: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language: en\n"
@@ -16,44 +16,44 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: imdb-connector.php:279
+#: imdb-connector.php:278
 msgid "IMDb Connector settings"
 msgstr ""
 
-#: imdb-connector.php:301
+#: imdb-connector.php:300
 msgid "Settings"
 msgstr ""
 
-#: imdb-connector.php:301
+#: imdb-connector.php:300
 msgid "IMDb Connector"
 msgstr ""
 
-#: imdb-connector.php:307
+#: imdb-connector.php:306
 msgid "Caching"
 msgstr ""
 
-#: imdb-connector.php:311 imdb-connector.php:327 imdb-connector.php:343
+#: imdb-connector.php:310 imdb-connector.php:326 imdb-connector.php:342
 msgid "On"
 msgstr ""
 
-#: imdb-connector.php:313 imdb-connector.php:329 imdb-connector.php:345
+#: imdb-connector.php:312 imdb-connector.php:328 imdb-connector.php:344
 msgid "Off"
 msgstr ""
 
-#: imdb-connector.php:314 imdb-connector.php:330 imdb-connector.php:346
+#: imdb-connector.php:313 imdb-connector.php:329 imdb-connector.php:345
 msgid "Default"
 msgstr ""
 
-#: imdb-connector.php:318
+#: imdb-connector.php:317
 msgid ""
 "Allows IMDb Connector to cache movie details and covers for faster access."
 msgstr ""
 
-#: imdb-connector.php:323
+#: imdb-connector.php:322
 msgid "Shortcodes"
 msgstr ""
 
-#: imdb-connector.php:334
+#: imdb-connector.php:333
 msgid ""
 "Provides <a href=\"http://codex.wordpress.org/Shortcode_API\" target=\"_blank"
 "\">shortcodes</a> to easily insert movie details into your posts or pages."
@@ -62,17 +62,17 @@ msgid ""
 "\">online documentary.</a>"
 msgstr ""
 
-#: imdb-connector.php:339
+#: imdb-connector.php:338
 msgid "Use default styles"
 msgstr ""
 
-#: imdb-connector.php:350
+#: imdb-connector.php:349
 msgid ""
 "Makes IMDb Connector use its default CSS styles for widgets etc.<br /"
 ">defined in <code>styles.css</code>."
 msgstr ""
 
-#: imdb-connector.php:355
+#: imdb-connector.php:354
 msgid ""
 "Do you speak more than one language? Help making IMDb Connector<br />easier "
 "to use for foreign users by <a href=\"https://www.transifex.com/projects/p/"
@@ -80,7 +80,7 @@ msgid ""
 "Transifex.</a>"
 msgstr ""
 
-#: imdb-connector.php:360
+#: imdb-connector.php:359
 msgid "Save changes"
 msgstr ""
 

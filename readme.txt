@@ -155,10 +155,16 @@ Also make sure that the folder *cache* in the plugin directory is writable ([CHM
 
 == Changelog ==
 
+= 0.1.2 =
+* Hotfix.
+
 = 0.1 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+Implemented hotfix.
 
 = 0.1 =
 This is the first release of IMDb Connector.
