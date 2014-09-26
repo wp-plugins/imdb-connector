@@ -1,0 +1,59 @@
+/**
+ * Settings page
+ */
+
+.imdb-connector-settings .message {
+	font-size:   12px;
+	font-weight: bold;
+}
+
+.imdb-connector-settings .message.success {
+	color: #4ACD70;
+}
+
+.imdb-connector-settings .message.error {
+	color: #E75A54;
+}
+
+.imdb-connector-settings #allow-caching-row #invalid-directory .message {
+	margin-bottom: 10px;
+}
+
+.imdb-connector-settings #delete-cache-container {
+	margin-top: 10px;
+	height:     30px;
+}
+
+.imdb-connector-settings #delete-cache-container #delete-cache-loading-icon {
+	position: relative;
+	left:     30px;
+	top:      5px;
+}
+
+.imdb-connector-settings #shortcode-examples ul li {
+	margin-bottom: 10px;
+}
+
+.imdb-connector-settings #shortcode-examples p,
+.imdb-connector-settings #shortcode-examples code {
+	font-size: 12px;
+
+}
+
+.imdb-connector-settings #movie-list {
+	width:  50%;
+	height: 80px;
+	resize: vertical;
+}
+
+.imdb-connector-settings #movie-list.expanded {
+	height: 200px;
+}
+
+/**
+ * Widget configuration
+ */
+
+.imdb-connector-widget-admin textarea {
+	resize: vertical;
+}
