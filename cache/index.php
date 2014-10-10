@@ -1,5 +1,2 @@
 <?php
-  /**
-   * Nothing to see here, just preventing users from viewing the cached files.
-   */
-?>
+  /** Nothing's going on here; just protecting your privacy */

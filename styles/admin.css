@@ -2,6 +2,18 @@
  * Settings page
  */
 
+.imdb-connector-settings {
+	width: 70%;
+}
+
+.imdb-connector-settings input[type="radio"] {
+	margin-left: 10px;
+}
+
+.imdb-connector-settings input[type="radio"].first {
+	margin-left: 0 !important;
+}
+
 .imdb-connector-settings .message {
 	font-size:   12px;
 	font-weight: bold;
@@ -13,6 +25,10 @@
 
 .imdb-connector-settings .message.error {
 	color: #E75A54;
+}
+
+.imdb-connector-settings .radio-description {
+	font-size: 12px;
 }
 
 .imdb-connector-settings #allow-caching-row #invalid-directory .message {

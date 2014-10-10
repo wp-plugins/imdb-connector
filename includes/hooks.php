@@ -36,7 +36,7 @@
 	add_action("init", "init_imdb_connector_languages");
 
 	/**
-	 * Load plugin's styles (if allowed in admin settings).
+	 * Load plugin's styles.
 	 *
 	 * @since 0.1
 	 */
@@ -45,9 +45,7 @@
 		wp_enqueue_style("imdb-connector-widgets-style", get_imdb_connector_url() . "styles/widgets.css");
 	}
 
-	if(get_imdb_connector_setting("allow_default_styles") == "on") {
-		add_action("wp_enqueue_scripts", "load_imdb_connector_styles_and_scripts");
-	}
+	add_action("wp_enqueue_scripts", "load_imdb_connector_styles_and_scripts");
 
 	/**
 	 * @since 0.1

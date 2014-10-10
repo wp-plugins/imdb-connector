@@ -49,6 +49,15 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.3 =
+* Added option to chose if the movie detail cache should be stored locally on in MySQL.
+* Added an option to the settings page that defines whether the movie poster should be cached or not.
+* Added "format" option array to get_imdb_connector_movie() function that defines whether the output should be an "array" or "object".
+* Added translations and updated existing ones.
+* The movie details "genre", "director", "writer", "actors", "country" and "language" are split up in arrays.
+* The movie detail "runtime" is now an array containing "timestamp", "minutes" and "hours".
+* Removed "Use default widgets style" from settings page.
+
 = 0.2 =
 * Added "Delete cache" function on settings page.
 * Added several PHP functions, e.g. search_imdb_connector_movies().
@@ -69,6 +78,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.3 =
+**IMPORTANT:** The array key names have been renamed and partly reformatted. Please see "PHP functions" section in the [official documentation](http://www.koljanolte.com/wordpress/plugins/imdb-connector/#PHP functions) for the new structure.
 
 = 0.2 =
 Major update with many bug fixes and new features and functions. See changelog for more information.
