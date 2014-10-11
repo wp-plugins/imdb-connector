@@ -257,7 +257,7 @@
 					$counter = 0;
 					/** Check if array contains the specified movie */
 					foreach($current_cache as $movie) {
-						if(isset($movie["title"]) && $movie["title"] == $id_or_title) {
+						if(isset($movie["title"]) && $movie["title"] == $id_or_title || isset($movie["imdbid"]) && $movie["imdbid"] == $id_or_title) {
 							$has_movie     = true;
 							$movie_details = $current_cache[$counter];
 							break;
@@ -268,7 +268,7 @@
 				/** If not, get movie details and add it to the database */
 				if(!$has_movie) {
 					$data = imdb_connector_sanitize_movie_details(json_decode(file_get_contents($api_url), true));
-					if(!isset($movie_details["title"])) {
+					if(!isset($data["title"])) {
 						$found = false;
 					}
 					else {
