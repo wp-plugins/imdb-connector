@@ -630,6 +630,8 @@
 		foreach($movie_details as $movie_detail => $value) {
 			/** Convert detail identifiers to lowercase */
 			$movie_detail = strtolower($movie_detail);
+			/** Escape "dangerous" characters */
+			$value = esc_html($value);
 			/** Convert keys with multiple values into an array */
 			$to_array = array(
 				"genre",
