@@ -49,6 +49,15 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.4 =
+* MySQL cache is now stored in a separate table.
+* Added feature to select the table name the cache data is being stored.
+* Added feature to automatically delete the cache after a certain time.
+* Added feature allowing admins to chose what cached files and settings IMDb Connector should keep after disabling the plugin.
+* Added "type" movie detail that returns the type (documentary, series, movie, ...) of the movie.
+* Renamed movie details "genre", "country", "language", "writer" and "director" to plural names.
+* Updated translations.
+
 = 0.3 =
 * Added option to chose if the movie detail cache should be stored locally on in MySQL.
 * Added an option to the settings page that defines whether the movie poster should be cached or not.
@@ -78,6 +87,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.4 =
+Major update with many new functions (auto delete, MySQL caching, deactivation actions), bug fixes and corrections.
 
 = 0.3 =
 **IMPORTANT:** The array key names have been renamed and partly reformatted. Please see "PHP functions" section in the [official documentation](http://www.koljanolte.com/wordpress/plugins/imdb-connector/#PHP functions) for the new structure.

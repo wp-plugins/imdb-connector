@@ -18,10 +18,14 @@
 	function get_imdb_connector_default_settings() {
 		/** Build the settings and their default values */
 		$settings = array(
-			"imdb_connector_allow_caching"    => "on",
-			"imdb_connector_cache_location"   => "local",
-			"imdb_connector_allow_shortcodes" => "on",
-			"imdb_connector_debug_mode"       => "on",
+			"imdb_connector_allow_caching"         => "on",
+			"imdb_connector_cache_location"        => "database",
+			"imdb_connector_database_table"        => "imdb_connector",
+			"imdb_connector_create_database_table" => "on",
+			"imdb_connector_allow_shortcodes"      => "on",
+			"imdb_connector_auto_delete"           => "off",
+			"imdb_connector_deactivation_actions"  => array(),
+			"imdb_connector_debug_mode"            => "off",
 		);
 		return $settings;
 	}
@@ -63,7 +67,7 @@
 			else {
 				$value = $option;
 			}
-			if(strstr($value, "%imdb_connector_path%")) {
+			if(!is_array($value) && strstr($value, "%imdb_connector_path%")) {
 				$value = str_replace("%imdb_connector_path%", plugin_dir_path(dirname(__FILE__)), $value);
 			}
 			$settings[$setting] = $value;
@@ -91,6 +95,111 @@
 			$setting = $settings[$setting];
 		}
 		return $setting;
+	}
+
+	/**
+	 * Sets the default settings when plugin is activated and no
+	 * settings have been (previously) set.
+	 *
+	 * @since    0.1
+	 *
+	 * @param bool $default_settings
+	 * @param bool $overwrite
+	 *
+	 * @internal param bool $create_table
+	 * @internal param bool $table
+	 * @return bool
+	 */
+	function imdb_connector_install($default_settings = true, $overwrite = false) {
+		/** Uses update_option() to create the default options  */
+		if($default_settings) {
+			foreach(get_imdb_connector_default_settings() as $setting_name => $default_value) {
+				if(get_option($setting_name) == "" || $overwrite) {
+					update_option($setting_name, $default_value);
+				}
+			}
+		}
+		global $wpdb;
+		$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
+		if(get_imdb_connector_setting("create_database_table") == "on") {
+			if(!$wpdb->get_var("SHOW TABLES LIKE '$table'") || $overwrite) {
+				$query = "DROP TABLE IF EXISTS `$table`;";
+				$wpdb->query($query);
+			}
+			else {
+				return false;
+			}
+			/** Create plugin table */
+			$query = "
+				CREATE TABLE `$table` (
+					`ID`        bigint(20)  NOT NULL AUTO_INCREMENT,
+					`title`     text        NOT NULL,
+					`imdbid`    text        NOT NULL,
+					`year`      bigint(4)   NOT NULL,
+					`rated`     text        NOT NULL,
+					`released`  bigint(4)   NOT NULL,
+					`runtime`   text        NOT NULL,
+					`genres`    text        NOT NULL,
+					`directors` text        NOT NULL,
+					`writers`   text        NOT NULL,
+					`actors`    text        NOT NULL,
+					`languages` text        NOT NULL,
+					`countries` text        NOT NULL,
+					`plot`      longtext    NOT NULL,
+					`awards`    text        NOT NULL,
+					`poster`    text        NOT NULL,
+					`metascore` text        NOT NULL,
+					`imdbvotes` text        NOT NULL,
+					`type`      text        NOT NULL,
+					PRIMARY KEY (`ID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+				";
+			return $wpdb->query($query);
+		}
+		update_option("imdb_connector_cleared_cache_date", date("Y-m-d"));
+		return true;
+	}
+
+	/**
+	 * Removes generated cache files.
+	 *
+	 * @internal param bool $delete_table
+	 * @internal param bool $delete_posters
+	 * @internal param bool $delete_movie_details
+	 *
+	 * @since    0.4
+	 *
+	 * @return bool
+	 */
+	function imdb_connector_uninstall() {
+		$option = get_imdb_connector_setting("deactivation_actions");
+		/** Delete MySQL table */
+		if(in_array("database", $option)) {
+			global $wpdb;
+			$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
+			$wpdb->query("DROP TABLE $table");
+		}
+		/** Delete cached posters */
+		if(in_array("posters", $option)) {
+			$posters = glob(get_imdb_connector_cache_path() . "/*.jpg");
+			foreach($posters as $poster) {
+				unlink($poster);
+			}
+		}
+		/** Delete cached movie details in cache directory */
+		if(in_array("movie_details", $option)) {
+			$movie_details = glob(get_imdb_connector_cache_path() . "/*.tmp");
+			foreach($movie_details as $movie_detail) {
+				unlink($movie_detail);
+			}
+		}
+		/** Deletes plugin settings */
+		if(in_array("settings", $option)) {
+			foreach(get_imdb_connector_settings() as $setting_name => $setting_value) {
+				delete_option($setting_name);
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -225,7 +334,7 @@
 			$cache_directory_url  = get_imdb_connector_cache_url();
 			$cache_file_path      = $cache_directory_path . "/" . $file_name . ".tmp";
 
-			if(get_imdb_connector_setting("cache_location") == "local") {
+			if($options["cache_location"] == "local") {
 				/** Display error message if the directory doesn't exist and can't be created automatically */
 				if(!is_dir($cache_directory_path) && !mkdir($cache_directory_path)) {
 					the_imdb_connector_debug_message(__("The cache directory does not exists and could not be created:") . " " . $cache_directory_path);
@@ -249,34 +358,74 @@
 					fclose($handle);
 				}
 			}
-			elseif(get_imdb_connector_setting("cache_location") == "mysql") {
-				$current_cache = get_option("imdb_connector_cache");
-				$has_movie     = false;
-				/** Check if array has items */
-				if(isset($current_cache[0])) {
-					$counter = 0;
-					/** Check if array contains the specified movie */
-					foreach($current_cache as $movie) {
-						if(isset($movie["title"]) && $movie["title"] == $id_or_title || isset($movie["imdbid"]) && $movie["imdbid"] == $id_or_title) {
-							$has_movie     = true;
-							$movie_details = $current_cache[$counter];
-							break;
-						}
-						$counter++;
-					}
+			elseif($options["cache_location"] == "database") {
+				global $wpdb;
+				$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
+				imdb_connector_install(false, false);
+				$query = "SELECT * FROM $table ";
+				if($type == "i") {
+					$query .= "WHERE imdbid = " . $id_or_title;
 				}
-				/** If not, get movie details and add it to the database */
-				if(!$has_movie) {
-					$data = imdb_connector_sanitize_movie_details(json_decode(file_get_contents($api_url), true));
-					if(!isset($data["title"])) {
-						$found = false;
-					}
-					else {
-						$new_cache = $current_cache;
-						array_push($new_cache, $data);
-						update_option("imdb_connector_cache", $new_cache);
-						$movie_details = $data;
-					}
+				else {
+					$query .= "WHERE title = '$id_or_title'";
+				}
+				$movie_details = $wpdb->get_row($query, "ARRAY_A");
+				/** Read row and convert serialized strings back to array */
+				if($movie_details) {
+					$movie_details["runtime"]   = unserialize($movie_details["runtime"]);
+					$movie_details["directors"] = unserialize($movie_details["directors"]);
+					$movie_details["genres"]    = unserialize($movie_details["genres"]);
+					$movie_details["writers"]   = unserialize($movie_details["writers"]);
+					$movie_details["actors"]    = unserialize($movie_details["actors"]);
+					$movie_details["languages"] = unserialize($movie_details["languages"]);
+					$movie_details["countries"] = unserialize($movie_details["countries"]);
+				}
+				/** Movie doesn't exist in the database, so we add it */
+				elseif(get_imdb_connector_setting("create_database_table") == "on") {
+					$movie_details = json_decode(file_get_contents($api_url), true);
+					$movie_details = imdb_connector_sanitize_movie_details($movie_details);
+					$data          = array(
+						"title"     => $movie_details["title"],
+						"imdbid"    => $movie_details["imdbid"],
+						"year"      => $movie_details["year"],
+						"released"  => $movie_details["released"],
+						"runtime"   => serialize($movie_details["runtime"]),
+						"genres"    => serialize($movie_details["genres"]),
+						"writers"   => serialize($movie_details["writers"]),
+						"directors" => serialize($movie_details["directors"]),
+						"actors"    => serialize($movie_details["actors"]),
+						"languages" => serialize($movie_details["languages"]),
+						"countries" => serialize($movie_details["countries"]),
+						"rated"     => $movie_details["rated"],
+						"poster"    => $movie_details["poster"],
+						"awards"    => $movie_details["awards"],
+						"plot"      => $movie_details["plot"],
+						"metascore" => $movie_details["metascore"],
+						"imdbvotes" => $movie_details["imdbvotes"],
+						"type"      => $movie_details["type"],
+					);
+					$wpdb->insert($table, $data,
+						array(
+							"%s",
+							"%s",
+							"%d",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s",
+							"%s"
+						)
+					);
 				}
 			}
 			/** Create movie poster if it doesn't exist yet */
@@ -290,8 +439,8 @@
 						$handle = fopen($poster_path, "a");
 						fwrite($handle, file_get_contents($movie_details["poster"]));
 						fclose($handle);
-						/** Change poster URL to cache file */
 					}
+					/** Change poster URL to cache file */
 					$movie_details["poster"] = $cache_directory_url . "/" . $file_name . ".jpg";
 				}
 			}
@@ -462,7 +611,22 @@
 		if(!$movie) {
 			return false;
 		}
-		if(!isset($movie[$detail])) {
+		$deprecated = array(
+			"genre",
+			"country",
+			"language",
+			"director",
+			"writer"
+		);
+		if(in_array($detail, $deprecated)) {
+			$new_detail = $detail . "s";
+			if($detail == "country") {
+				$new_detail = "countries";
+			}
+			_deprecated_argument("get_imdb_connector_movie_detail", "0.4", "Use <strong>$new_detail</strong> instead.");
+			$detail = $new_detail;
+		}
+		elseif(!isset($movie[$detail])) {
 			the_imdb_connector_debug_message(sprintf(__('The parameter <strong>%s</strong> was not found among the movie details.', "imdb_connector"), $detail));
 			return false;
 		}
@@ -518,14 +682,16 @@
 	/**
 	 * Checks if option has a specific value and makes HTML input checked/unchecked.
 	 *
-	 * @param $setting
-	 * @param $check_value
+	 * @param        $setting
+	 * @param        $check_value
+	 *
+	 * @param string $type
 	 *
 	 * @since 0.1
 	 */
-	function imdb_connector_check_setting($setting, $check_value) {
+	function imdb_connector_check_setting($setting, $check_value, $type = "checked") {
 		if(get_imdb_connector_setting($setting) == $check_value) {
-			echo ' checked="checked"';
+			echo " $type=\"$type\"";
 		}
 	}
 
@@ -630,16 +796,32 @@
 		foreach($movie_details as $movie_detail => $value) {
 			/** Convert detail identifiers to lowercase */
 			$movie_detail = strtolower($movie_detail);
+			/** Rename fields that contain more than one value */
+			if($movie_detail == "genre") {
+				$movie_detail = "genres";
+			}
+			elseif($movie_detail == "director") {
+				$movie_detail = "directors";
+			}
+			elseif($movie_detail == "country") {
+				$movie_detail = "countries";
+			}
+			elseif($movie_detail == "writer") {
+				$movie_detail = "writers";
+			}
+			elseif($movie_detail == "language") {
+				$movie_detail = "languages";
+			}
 			/** Escape "dangerous" characters */
 			$value = esc_html($value);
 			/** Convert keys with multiple values into an array */
 			$to_array = array(
-				"genre",
-				"director",
-				"country",
-				"writer",
+				"genres",
+				"directors",
+				"countries",
+				"writers",
 				"actors",
-				"language"
+				"languages"
 			);
 			/** Split multiple values into arrays */
 			if(in_array($movie_detail, $to_array)) {
@@ -672,4 +854,83 @@
 			$movie_details = json_encode($movie_details);
 		}
 		return $movie_details;
+	}
+
+	/**
+	 * Deletes the cache generated by IMDb Connector.
+	 *
+	 * @param string $cache_location
+	 *
+	 * @since 0.4
+	 *
+	 * @return bool
+	 */
+	function delete_imdb_connector_cache($cache_location = "all") {
+		$success = false;
+		/** Stop script if cache location has not been defined */
+		if(!$cache_location) {
+			return false;
+		}
+		/** Delete local cache */
+		if($cache_location == "all" || $cache_location == "local") {
+			$movie_details = glob(get_imdb_connector_cache_path() . "/*.tmp");
+			$posters       = glob(get_imdb_connector_cache_path() . "/*.jpg");
+			$files         = array_merge($movie_details, $posters);
+			foreach($files as $file) {
+				if(is_writable($file) && unlink($file)) {
+					$success = true;
+				}
+			}
+		}
+		/** Delete database cache */
+		if($cache_location == "all" || $cache_location == "database") {
+			global $wpdb;
+			$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
+			if($wpdb->query("TRUNCATE $table")) {
+				$success = true;
+			}
+		}
+		return $success;
+	}
+
+	/**
+	 * Retrieves all movies cached by IMDb Connector.
+	 *
+	 * @param string $cache_location
+	 * @param string $type
+	 *
+	 * @since 0.4
+	 *
+	 * @return array|mixed
+	 */
+	function get_imdb_connector_cached_movies($cache_location = "all", $type = "array") {
+		$movies = array();
+		if($cache_location == "all" || $cache_location == "local") {
+			foreach(glob(get_imdb_connector_cache_path() . "/*.tmp") as $file) {
+				$movie = json_decode(file_get_contents($file), true);
+				array_push($movies, $movie);
+			}
+		}
+		if($cache_location == "all" || $cache_location == "database") {
+			global $wpdb;
+			$table           = $wpdb->prefix . get_imdb_connector_setting("database_table");
+			$selected_movies = $wpdb->get_results("SELECT * FROM $table", "ARRAY_A");
+			if(!isset($selected_movies[0])) {
+				return $movies;
+			}
+			foreach($selected_movies as $index => $field) {
+				$selected_movies[$index]["runtime"]   = unserialize($field["runtime"]);
+				$selected_movies[$index]["genres"]    = unserialize($field["genres"]);
+				$selected_movies[$index]["directors"] = unserialize($field["directors"]);
+				$selected_movies[$index]["languages"] = unserialize($field["languages"]);
+				$selected_movies[$index]["countries"] = unserialize($field["countries"]);
+				$selected_movies[$index]["actors"]    = unserialize($field["actors"]);
+				$selected_movies[$index]["writers"]   = unserialize($field["writers"]);
+			}
+			array_push($movies, $selected_movies[0]);
+		}
+		if($type == "object") {
+			$movies = json_decode(json_encode($movies));
+		}
+		return $movies;
 	}
