@@ -668,7 +668,10 @@
 			if(isset($id)) {
 				$title = $id;
 			}
-			$movie_detail = get_imdb_movie_detail($title, $detail);
+			$movie_detail = get_imdb_connector_movie_detail($title, $detail);
+			if(is_array($movie_detail)) {
+        $movie_detail = implode(", ", $movie_detail);
+			}
 		}
 		return $movie_detail;
 	}
