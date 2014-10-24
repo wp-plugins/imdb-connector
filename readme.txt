@@ -49,6 +49,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.4.1 =
+* Fixed shortcode movie details with multiple values in it.
+
 = 0.4 =
 * MySQL cache is now stored in a separate table.
 * Added feature to select the table name the cache data is being stored.
@@ -87,6 +90,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.4.1 =
+Shortcode fix.
 
 = 0.4 =
 Major update with many new functions (auto delete, MySQL caching, deactivation actions), bug fixes and corrections.

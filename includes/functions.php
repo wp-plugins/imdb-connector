@@ -364,7 +364,7 @@
 				imdb_connector_install(false, false);
 				$query = "SELECT * FROM $table ";
 				if($type == "i") {
-					$query .= "WHERE imdbid = " . $id_or_title;
+					$query .= "WHERE imdbid = '" . $id_or_title . "'";
 				}
 				else {
 					$query .= "WHERE title = '$id_or_title'";
