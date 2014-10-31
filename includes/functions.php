@@ -131,7 +131,7 @@
 			}
 			/** Create plugin table */
 			$query = "
-				CREATE TABLE `$table` (
+				CREATE TABLE IF NOT EXISTS `$table` (
 					`ID`        bigint(20)  NOT NULL AUTO_INCREMENT,
 					`title`     text        NOT NULL,
 					`imdbid`    text        NOT NULL,
@@ -162,10 +162,6 @@
 
 	/**
 	 * Removes generated cache files.
-	 *
-	 * @internal param bool $delete_table
-	 * @internal param bool $delete_posters
-	 * @internal param bool $delete_movie_details
 	 *
 	 * @since    0.4
 	 *
@@ -670,7 +666,7 @@
 			}
 			$movie_detail = get_imdb_connector_movie_detail($title, $detail);
 			if(is_array($movie_detail)) {
-        $movie_detail = implode(", ", $movie_detail);
+				$movie_detail = implode(", ", $movie_detail);
 			}
 		}
 		return $movie_detail;
@@ -698,13 +694,13 @@
 		}
 	}
 
-
 	/**
 	 * Returns the URL to the plugin directory.
 	 *
+	 * @since 0.2
+	 *
 	 * @return string
 	 *
-	 * @since 0.2
 	 */
 	function get_imdb_connector_url() {
 		return plugin_dir_url(dirname(__FILE__));
@@ -771,6 +767,8 @@
 
 	/**
 	 * Displays an error/warning message and writes it into debug.log.
+	 *
+	 * @since 0.2
 	 *
 	 * @param        $message
 	 * @param string $type
@@ -932,6 +930,7 @@
 			}
 			array_push($movies, $selected_movies[0]);
 		}
+		/** Convert array to stdClass object if set */
 		if($type == "object") {
 			$movies = json_decode(json_encode($movies));
 		}

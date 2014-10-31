@@ -30,6 +30,8 @@
 	add_action("wp_enqueue_scripts", "load_imdb_connector_styles_and_scripts");
 
 	/**
+	 * Loads plugin's scripts and styles used on the Dashboard.
+	 *
 	 * @since 0.1
 	 */
 	function load_imdb_connector_admin_styles_and_scripts() {
@@ -38,6 +40,18 @@
 	}
 
 	add_action("admin_enqueue_scripts", "load_imdb_connector_admin_styles_and_scripts");
+
+	/**
+	 * Initializes plugin's setting page.
+	 *
+	 * @since 0.1
+	 */
+	function init_admin_settings_page() {
+		/** Creates a new page on the admin interface */
+		add_options_page(__("Settings", "imdb_connector"), "IMDb Connector", "manage_options", "imdb-connector", "build_admin_settings_page");
+	}
+
+	add_action("admin_menu", "init_admin_settings_page");
 
 	/**
 	 * Checks if the current date is over the set limit

@@ -14,7 +14,7 @@
 	require("../../../../wp-load.php");
 
 	/** "Delete cache" function */
-	if($_GET["action"] == "delete_cache") {
+	if($_GET["action"] == "delete_cache" && isset($_GET["nonce"]) && wp_verify_nonce($_GET["nonce"], "delete_cache")) {
 		$deleted_files = count(get_imdb_connector_cached_movies());
 		delete_imdb_connector_cache();
 		echo $deleted_files;

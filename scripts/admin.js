@@ -1,4 +1,9 @@
 jQuery(document).ready(function () {
+	/** Only apply scripts if we're on the IMDb Connector settings page */
+	if(jQuery("#imdb-connector-settings").length < 1) {
+		return false;
+	}
+
 	/**
 	 * "Delete cache" function
 	 */
@@ -13,7 +18,9 @@ jQuery(document).ready(function () {
 		loading_icon.fadeIn();
 
 		jQuery.ajax({
-			type: "get", url: file_url + "?action=delete_cache", success: function (response) {
+			type: "get",
+			url: file_url + "?action=delete_cache" + "&nonce=" + jQuery("#delete_cache_nonce").attr("value"),
+			success: function (response) {
 				button.show();
 				loading_icon.hide();
 				jQuery("#delete-cache-container").find(".message.success").fadeIn();

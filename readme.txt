@@ -26,7 +26,7 @@ In case you like this plugin, please consider [making a donation to Brian Fritz]
 
 If you have any other ideas for features, please don't hesitate to submit them by [sending me an e-mail](mailto:kolja.nolte@gmail.com) and I'll try my best to implement it in the next version. Your WP.org username will be added to the plugin's contributor list, of course (if you provide one).
 
-*Feel free to make IMDb Connector easier to use for foreign users by [help translating the plugin on Transifex](https://www.transifex.com/projects/p/plugin-imdb-connector/)*.
+*Feel free to make IMDb Connector easier to use for users fron a non English speaking country by [help translating the plugin on Transifex](https://www.transifex.com/projects/p/plugin-imdb-connector/)*.
 
 == Installation ==
 
@@ -48,6 +48,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 0.4.2 =
+* Added function PHP function `get_imdb_connector_cached_movies()`.
+* Added [nonce protection for "delete cache" script](http://codex.wordpress.org/WordPress_Nonces) to prevent misuse.
+* Added nonce protection for settings page.
+* Updated translations.
 
 = 0.4.1 =
 * Fixed shortcode movie details with multiple values in it.
@@ -90,6 +96,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.4.2 =
+Security fix, translations updates.
 
 = 0.4.1 =
 Shortcode fix.
