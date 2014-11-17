@@ -49,6 +49,10 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.4.3 =
+* Added "imdbrating" field.
+* Updated translations.
+
 = 0.4.2 =
 * Added function PHP function `get_imdb_connector_cached_movies()`.
 * Added [nonce protection for "delete cache" script](http://codex.wordpress.org/WordPress_Nonces) to prevent misuse.
@@ -96,6 +100,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.4.3 =
+Added "imdbrating" field.
 
 = 0.4.2 =
 Security fix, translations updates.

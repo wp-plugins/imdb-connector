@@ -103,3 +103,29 @@
 
 	add_action("admin_init", "init_imdb_connector_auto_delete");
 	add_action("init", "init_imdb_connector_auto_delete");
+
+	/**
+	 * Adds "imdbrating" column to existing database.
+	 *
+	 * @since 0.4.3
+	 *
+	 * @return bool
+	 */
+	function imdb_connector_extend_table() {
+		$option = get_option("imdb_connector_added_imdbrating_column");
+		if($option) {
+			//return false;
+		}
+		global $wpdb;
+		$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
+
+		$has_column = $wpdb->query("SHOW COLUMNS FROM $table LIKE 'imdbrating'");
+		if(!$has_column) {
+			if($wpdb->query("ALTER TABLE $table ADD imdbrating TEXT NOT NULL AFTER imdbvotes")) {
+				return update_option("imdb_connector_added_imdbrating_column", "true");
+			}
+		}
+		return false;
+	}
+
+	add_action("admin_init", "imdb_connector_extend_table");
