@@ -1,7 +1,7 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 0.1
 Requires at least: 3.0.1
 License: GPLv2 or later
@@ -48,6 +48,11 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 0.5 =
+* Added plugin installer icon.
+* Code rearrangements.
+* Updated translations.
 
 = 0.4.3 =
 * Added "imdbrating" field.
@@ -100,6 +105,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.5 =
+Cosmetic fixes; plugin installer icon.
 
 = 0.4.3 =
 Added "imdbrating" field.

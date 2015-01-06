@@ -27,6 +27,7 @@
 			"imdb_connector_deactivation_actions"  => array(),
 			"imdb_connector_debug_mode"            => "off",
 		);
+
 		return $settings;
 	}
 
@@ -47,6 +48,7 @@
 		if(!isset($settings[$setting])) {
 			return false;
 		}
+
 		return $settings[$setting];
 	}
 
@@ -72,6 +74,7 @@
 			}
 			$settings[$setting] = $value;
 		}
+
 		return $settings;
 	}
 
@@ -94,6 +97,7 @@
 		else {
 			$setting = $settings[$setting];
 		}
+
 		return $setting;
 	}
 
@@ -155,9 +159,11 @@
 					PRIMARY KEY (`ID`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 				";
+
 			return $wpdb->query($query);
 		}
 		update_option("imdb_connector_cleared_cache_date", date("Y-m-d"));
+
 		return true;
 	}
 
@@ -196,6 +202,7 @@
 				delete_option($setting_name);
 			}
 		}
+
 		return true;
 	}
 
@@ -208,6 +215,7 @@
 	 */
 	function get_imdb_connector_cache_path() {
 		$path = str_replace("\\", "/", plugin_dir_path(dirname(__FILE__))) . "cache";
+
 		return $path;
 	}
 
@@ -229,6 +237,7 @@
 	 */
 	function get_imdb_connector_cache_url() {
 		$cache_url = plugin_dir_url(dirname(__FILE__)) . "cache";
+
 		return $cache_url;
 	}
 
@@ -259,6 +268,7 @@
 		}
 		/** Transform characters to URL characters */
 		$title = rawurlencode($title);
+
 		return $title;
 	}
 
@@ -282,6 +292,7 @@
 		if($no_ending) {
 			$url = substr($url, 0, strlen($url) - 4);
 		}
+
 		return $url;
 	}
 
@@ -335,11 +346,13 @@
 				/** Display error message if the directory doesn't exist and can't be created automatically */
 				if(!is_dir($cache_directory_path) && !mkdir($cache_directory_path)) {
 					the_imdb_connector_debug_message(__("The cache directory does not exists and could not be created:") . " " . $cache_directory_path);
+
 					return false;
 				}
 				/** Display error message if the directory exists but isn't writable */
 				elseif(!is_writable($cache_directory_path)) {
 					the_imdb_connector_debug_message(__("The cache directory exists but is not writable. Please set CHMOD 755 to:" . " " . $cache_directory_path));
+
 					return false;
 				}
 				/** Get details from cached file if it exists */
@@ -369,13 +382,11 @@
 				$movie_details = $wpdb->get_row($query, "ARRAY_A");
 				/** Read row and convert serialized strings back to array */
 				if($movie_details) {
-					$movie_details["runtime"]   = unserialize($movie_details["runtime"]);
-					$movie_details["directors"] = unserialize($movie_details["directors"]);
-					$movie_details["genres"]    = unserialize($movie_details["genres"]);
-					$movie_details["writers"]   = unserialize($movie_details["writers"]);
-					$movie_details["actors"]    = unserialize($movie_details["actors"]);
-					$movie_details["languages"] = unserialize($movie_details["languages"]);
-					$movie_details["countries"] = unserialize($movie_details["countries"]);
+					foreach($movie_details as $movie_detail => $value) {
+						if(is_serialized($value)) {
+							$movie_details[$movie_detail] = unserialize($value);
+						}
+					}
 				}
 				/** Movie doesn't exist in the database, so we add it */
 				elseif(get_imdb_connector_setting("create_database_table") == "on") {
@@ -402,28 +413,20 @@
 						"imdbvotes"  => $movie_details["imdbvotes"],
 						"type"       => $movie_details["type"],
 					);
-					$wpdb->insert($table, $data,
-						array(
-							"%s",
-							"%s",
-							"%d",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s",
-							"%s"
-						)
-					);
+
+					$formats = array();
+					foreach($data as $key => $value) {
+						$format = "%s";
+						if(is_int($value)) {
+							$format = "%d";
+						}
+						elseif(is_float($value)) {
+							$format = "%f";
+						}
+						array_push($formats, $format);
+					}
+
+					$wpdb->insert($table, $data, $formats);
 				}
 			}
 			/** Create movie poster if it doesn't exist yet */
@@ -453,6 +456,7 @@
 
 		if(!$found) {
 			the_imdb_connector_debug_message(sprintf(__("The movie <strong>%s</strong> could not be found. Please check your spelling.", "imdb_connector"), $id_or_title));
+
 			return false;
 		}
 
@@ -460,6 +464,7 @@
 		if($options["format"] == "object") {
 			$movie_details = json_decode(json_encode($movie_details));
 		}
+
 		return $movie_details;
 	}
 
@@ -474,6 +479,7 @@
 	 */
 	function get_imdb_movie($id_or_title) {
 		_deprecated_function("get_imdb_movie", "0.2", "get_imdb_connector_movie($id_or_title)");
+
 		return get_imdb_connector_movie($id_or_title);
 	}
 
@@ -495,10 +501,12 @@
 				$id_or_title = explode(", ", $id_or_title);
 			}
 			the_imdb_connector_debug_message(sprintf(__('No movies could be found with the term(s) <strong>%s</strong>.', "imdb_connector"), $id_or_title));
+
 			return false;
 		}
 		$results = imdb_connector_sanitize_movie_details($results);
-		return (array)$results["search"];
+
+		return (array) $results["search"];
 	}
 
 	/**
@@ -521,7 +529,8 @@
 			}
 			array_push($results, $result);
 		}
-		return (array)$results;
+
+		return (array) $results;
 	}
 
 	/**
@@ -537,7 +546,8 @@
 		if(!get_imdb_connector_movie($id_or_title)) {
 			return false;
 		}
-		return (boolean)true;
+
+		return (boolean) true;
 	}
 
 	/**
@@ -551,6 +561,7 @@
 	 */
 	function has_imdb_movie($id_or_title) {
 		_deprecated_function("has_imdb_movie", "0.2", "has_imdb_connector_movie($id_or_title)");
+
 		return get_imdb_connector_movie($id_or_title);
 	}
 
@@ -577,7 +588,8 @@
 			the_imdb_connector_debug_message(__("The following movie(s) could not be found. Please verify spelling:", "imdb_connector"));
 			echo " " . implode(", ", $not_found);
 		}
-		return (array)$movies;
+
+		return (array) $movies;
 	}
 
 	/**
@@ -591,6 +603,7 @@
 	 */
 	function get_imdb_movies($title) {
 		_deprecated_function("get_imdb_movies", "0.2", "get_imdb_connector_movies($title)");
+
 		return get_imdb_connector_movies($title);
 	}
 
@@ -626,8 +639,10 @@
 		}
 		elseif(!isset($movie[$detail])) {
 			the_imdb_connector_debug_message(sprintf(__('The parameter <strong>%s</strong> was not found among the movie details.', "imdb_connector"), $detail));
+
 			return false;
 		}
+
 		return $movie[$detail];
 	}
 
@@ -643,6 +658,7 @@
 	 */
 	function get_imdb_movie_detail($id_or_title, $detail = "title") {
 		_deprecated_function("get_imdb_movie_detail", "0.2", "get_imdb_connector_movie_detail($id_or_title, $detail)");
+
 		return get_imdb_connector_movie_detail($id_or_title, $detail);
 	}
 
@@ -671,6 +687,7 @@
 				$movie_detail = implode(", ", $movie_detail);
 			}
 		}
+
 		return $movie_detail;
 	}
 
@@ -678,7 +695,6 @@
 	if(get_imdb_connector_setting("allow_shortcodes") == "on") {
 		add_shortcode("imdb_movie_detail", "imdb_connector_shortcode_movie_detail");
 	}
-
 
 	/**
 	 * Checks if option has a specific value and makes HTML input checked/unchecked.
@@ -764,6 +780,7 @@
 		$message_full = "[" . date("Y-m-d H:i:s") . "] " . $type . ": " . $message . "\n";
 		fwrite($handle, $message_full);
 		fclose($handle);
+
 		return $message;
 	}
 
@@ -856,6 +873,7 @@
 		if($is_object) {
 			$movie_details = json_encode($movie_details);
 		}
+
 		return $movie_details;
 	}
 
@@ -893,6 +911,7 @@
 				$success = true;
 			}
 		}
+
 		return $success;
 	}
 
@@ -918,23 +937,25 @@
 			global $wpdb;
 			$table           = $wpdb->prefix . get_imdb_connector_setting("database_table");
 			$selected_movies = $wpdb->get_results("SELECT * FROM $table", "ARRAY_A");
-			if(!isset($selected_movies[0])) {
+			if(!count($selected_movies)) {
 				return $movies;
 			}
-			foreach($selected_movies as $index => $field) {
-				$selected_movies[$index]["runtime"]   = unserialize($field["runtime"]);
-				$selected_movies[$index]["genres"]    = unserialize($field["genres"]);
-				$selected_movies[$index]["directors"] = unserialize($field["directors"]);
-				$selected_movies[$index]["languages"] = unserialize($field["languages"]);
-				$selected_movies[$index]["countries"] = unserialize($field["countries"]);
-				$selected_movies[$index]["actors"]    = unserialize($field["actors"]);
-				$selected_movies[$index]["writers"]   = unserialize($field["writers"]);
+
+			foreach($selected_movies as $movie_details) {
+				$movie = array();
+				foreach($movie_details as $movie_detail => $value) {
+					if(is_serialized($value)) {
+						$value = unserialize($value);
+					}
+					$movie[$movie_detail] = $value;
+				}
 			}
-			array_push($movies, $selected_movies[0]);
+			array_push($movies, $movie);
 		}
 		/** Convert array to stdClass object if set */
 		if($type == "object") {
 			$movies = json_decode(json_encode($movies));
 		}
+
 		return $movies;
 	}
