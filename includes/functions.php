@@ -68,7 +68,7 @@
 				$value = $default_value;
 			}
 			if(!is_array($value) && strstr($value, "%imdb_connector_path%")) {
-				$value = str_replace("%imdb_connector_path%", plugin_dir_path(__DIR__), $value);
+				$value = str_replace("%imdb_connector_path%", plugin_dir_path(dirname(__FILE__)), $value);
 			}
 			$settings[$setting] = $value;
 		}
@@ -212,7 +212,7 @@
 	 * @return mixed
 	 */
 	function get_imdb_connector_cache_path() {
-		$path = str_replace("\\", "/", plugin_dir_path(__DIR__)) . "cache";
+		$path = str_replace("\\", "/", plugin_dir_path(dirname(__FILE__))) . "cache";
 
 		return $path;
 	}
@@ -234,7 +234,7 @@
 	 * @return string
 	 */
 	function get_imdb_connector_cache_url() {
-		$cache_url = plugin_dir_url(__DIR__) . "cache";
+		$cache_url = plugin_dir_url(dirname(__FILE__)) . "cache";
 
 		return $cache_url;
 	}
@@ -720,7 +720,7 @@
 	 *
 	 */
 	function get_imdb_connector_url() {
-		return plugin_dir_url(__DIR__);
+		return plugin_dir_url(dirname(__FILE__));
 	}
 
 	/**
@@ -740,7 +740,7 @@
 	 * @since 0.2
 	 */
 	function get_imdb_connector_path() {
-		return plugin_dir_path(__DIR__);
+		return plugin_dir_path(dirname(__FILE__));
 	}
 
 	/**
