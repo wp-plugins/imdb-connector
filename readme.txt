@@ -49,6 +49,10 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.6 =
+* Fixed bug with PHP version below 5.2.
+* Cleaned up code.
+
 = 0.5 =
 * Added plugin installer icon.
 * Code rearrangements.
@@ -105,6 +109,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.6 =
+Bug fix for PHP version < 5.3.
 
 = 0.5 =
 Cosmetic fixes; plugin installer icon.
