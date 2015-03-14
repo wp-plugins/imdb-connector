@@ -49,6 +49,10 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.6.1 =
+* [Fixed small bug](https://wordpress.org/support/topic/php-connector-not-working).
+* Updated/added translations.
+
 = 0.6 =
 * Fixed bug with PHP version below 5.2.
 * Cleaned up code.
@@ -109,6 +113,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.6.1 =
+Minor bug fixes and updated/new translations.
 
 = 0.6 =
 Bug fix for PHP version < 5.3.

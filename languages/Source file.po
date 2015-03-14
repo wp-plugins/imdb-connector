@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: IMDb Connector\n"
-"POT-Creation-Date: 2015-01-07 03:31+0700\n"
-"PO-Revision-Date: 2015-01-07 03:31+0700\n"
+"POT-Creation-Date: 2015-03-15 04:32+0700\n"
+"PO-Revision-Date: 2015-03-15 04:32+0700\n"
 "Last-Translator: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language-Team: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Poedit-Basepath: ../\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -199,41 +199,36 @@ msgid ""
 "\">quickly reporting the bug</a>."
 msgstr ""
 
-#: includes/functions.php:348
+#: includes/functions.php:346
 msgid "The cache directory does not exists and could not be created:"
 msgstr ""
 
-#: includes/functions.php:354
-msgid ""
-"The cache directory exists but is not writable. Please set CHMOD 755 to: "
-msgstr ""
-
-#: includes/functions.php:458
+#: includes/functions.php:456
 #, php-format
 msgid ""
 "The movie <strong>%s</strong> could not be found. Please check your spelling."
 msgstr ""
 
-#: includes/functions.php:503
+#: includes/functions.php:501
 #, php-format
 msgid "No movies could be found with the term(s) <strong>%s</strong>."
 msgstr ""
 
-#: includes/functions.php:588
+#: includes/functions.php:586
 msgid "The following movie(s) could not be found. Please verify spelling:"
 msgstr ""
 
-#: includes/functions.php:641
+#: includes/functions.php:639
 #, php-format
 msgid ""
 "The parameter <strong>%s</strong> was not found among the movie details."
 msgstr ""
 
-#: includes/functions.php:771
+#: includes/functions.php:768
 msgid "ERROR"
 msgstr ""
 
-#: includes/functions.php:774
+#: includes/functions.php:771
 msgid "WARNING"
 msgstr ""
 

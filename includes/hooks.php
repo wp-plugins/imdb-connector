@@ -12,7 +12,8 @@
 	 * @since 0.1
 	 */
 	function init_imdb_connector_languages() {
-		load_plugin_textdomain("imdb_connector", false, dirname(plugin_basename(__FILE__)) . "/../languages");
+		$translation_path = plugin_dir_path(__FILE__) . "../languages/" . get_site_option("WPLANG") . ".mo";
+		load_textdomain("imdb_connector", $translation_path);
 	}
 
 	add_action("init", "init_imdb_connector_languages");

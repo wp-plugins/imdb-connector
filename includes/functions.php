@@ -349,8 +349,6 @@
 				}
 				/** Display error message if the directory exists but isn't writable */
 				elseif(!is_writable($cache_directory_path)) {
-					the_imdb_connector_debug_message(__("The cache directory exists but is not writable. Please set CHMOD 755 to:" . " " . $cache_directory_path));
-
 					return false;
 				}
 				/** Get details from cached file if it exists */
@@ -832,7 +830,6 @@
 				$movie_detail = "languages";
 			}
 			/** Escape "dangerous" characters */
-			$value = esc_html($value);
 			/** Convert keys with multiple values into an array */
 			$to_array = array(
 				"genres",
@@ -849,8 +846,12 @@
 
 			/** Format release date */
 			if($movie_detail == "released" && phpversion() > 5.2) {
-				$date  = date_create_from_format("d M Y", $value);
-				$value = $date->format("Y-m-d");
+				$value = new DateTime($value);
+				$value = $value->format("Y-m-d");
+				/*	echo $value;
+					$date  = date_create_from_format("Y-m-d", $value);
+					$value = $date->format("Y-m-d");
+				*/
 			}
 
 			/** Create runtime */
