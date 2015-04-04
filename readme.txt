@@ -49,6 +49,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 0.6.2 =
+* Fixed bug with newly added movies that do not contain all values.
+
 = 0.6.1 =
 * [Fixed small bug](https://wordpress.org/support/topic/php-connector-not-working).
 * Updated/added translations.
@@ -113,6 +116,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 0.6.2 =
+Fix for details of newly added movies.
 
 = 0.6.1 =
 Minor bug fixes and updated/new translations.

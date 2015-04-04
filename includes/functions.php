@@ -357,8 +357,11 @@
 				}
 				/** Get movie details online and create cache file */
 				else {
-					$handle        = fopen($cache_file_path, "a");
-					$data          = wp_remote_get($api_url);
+					$handle = fopen($cache_file_path, "a");
+					$data   = wp_remote_get($api_url);
+					if(is_wp_error($data)) {
+						return false;
+					}
 					$movie_details = json_decode($data["body"], true);
 					$movie_details = imdb_connector_sanitize_movie_details($movie_details);
 					fwrite($handle, stripslashes(json_encode($movie_details)));
@@ -434,7 +437,7 @@
 					$found = false;
 				}
 				else {
-					if(!file_exists($poster_path)) {
+					if(!file_exists($poster_path) && $movie_details["poster"] != "N/A") {
 						$handle = fopen($poster_path, "a");
 						fwrite($handle, file_get_contents($movie_details["poster"]));
 						fclose($handle);
@@ -845,7 +848,7 @@
 			}
 
 			/** Format release date */
-			if($movie_detail == "released" && phpversion() > 5.2) {
+			if($movie_detail == "released" && $value != "N/A" && phpversion() > 5.2) {
 				$value = new DateTime($value);
 				$value = $value->format("Y-m-d");
 				/*	echo $value;
@@ -857,8 +860,11 @@
 			/** Create runtime */
 			if($movie_detail == "runtime") {
 				$minutes   = preg_replace("'[^0-9]'", "", $value);
-				$timestamp = mktime(0, $minutes);
-				$value     = array(
+				$timestamp = 0;
+				if($value != "N/A") {
+					$timestamp = mktime(0, $minutes);
+				}
+				$value = array(
 					"timestamp" => $timestamp,
 					"minutes"   => $minutes,
 					"hours"     => date("G:i", $timestamp)
