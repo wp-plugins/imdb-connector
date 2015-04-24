@@ -1,13 +1,13 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.1
-Stable tag: 0.1
+Tested up to: 4.2
+Stable tag: 1.0
 Requires at least: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple plugin that allows you to easily get movie details from IMDb.com.
+A simple plugin that allows you to easily display and use movie details from IMDb.com.
 
 == Description ==
 
@@ -22,7 +22,7 @@ So far, the plugin comes with the following features:
 
 **For instructions on how to use, examples and additional information, please see [the official documentation](http://www.koljanolte.com/wordpress/plugins/imdb-connector/)**.
 
-In case you like this plugin, please consider [making a donation to Brian Fritz](http://www.omdbapi.com/), the author of omdbapi.com IMDb Connector is based on.
+In case you like this plugin, please consider [making a donation to Brian Fritz](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7Z6YBM23ECYJ), the author of omdbapi.com IMDb Connector is based on.
 
 If you have any other ideas for features, please don't hesitate to submit them by [sending me an e-mail](mailto:kolja.nolte@gmail.com) and I'll try my best to implement it in the next version. Your WP.org username will be added to the plugin's contributor list, of course (if you provide one).
 
@@ -48,6 +48,13 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 1.0 =
+* Stable release.
+* Code cleanup and other small optimizations.
+* Updated [documentation](www.koljanolte.com/wordpress/plugins/imdb-connector/).
+* Updated translations.
+* Updated screenshots.
 
 = 0.6.2 =
 * Fixed bug with newly added movies that do not contain all values.
@@ -116,6 +123,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0 =
+Stable release with small optimizations.
 
 = 0.6.2 =
 Fix for details of newly added movies.

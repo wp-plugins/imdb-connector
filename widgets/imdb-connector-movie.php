@@ -4,22 +4,23 @@
 	 * Class widget_imdb_connector_movie
 	 */
 	class widget_imdb_connector_movie extends WP_Widget {
-		function widget_imdb_connector_movie() {
-			parent::__construct("imdb_connector_movie", __("IMDb Connector movie", "imdb_connector"), array("description" => __("Displays a specific movie and its details.", "imdb_connector")));
+		public function widget_imdb_connector_movie() {
+			parent::__construct("imdb_connector_movie", __("IMDb Connector movie", "imdb_connector"), array(
+				"description" => __("Displays a specific movie and its details.", "imdb_connector")
+			));
 		}
 
 		/**
 		 * @param array $sidebar_info
 		 * @param array $options
-		 *
-		 * @return bool|void
 		 */
-		function widget($sidebar_info, $options) {
-			$checkboxes     = array(
+		public function widget($sidebar_info, $options) {
+			$checkboxes = array(
 				"show_movie_title",
 				"show_poster",
 				"show_plot"
 			);
+
 			$widget         = new widget_imdb_connector_movie();
 			$merged_options = array();
 			foreach($widget->widget_default_options() as $option => $default_value) {
@@ -28,13 +29,14 @@
 				}
 				else {
 					$value = $default_value;
-					if(in_array($option, $checkboxes)) {
+					if(in_array($option, $checkboxes, false)) {
 						$value = "off";
 					}
 				}
 				$merged_options[$option] = $value;
 			}
 			$options = $merged_options;
+
 			echo $sidebar_info["before_widget"];
 			echo $sidebar_info["before_title"];
 			echo $options["widget_title"];
@@ -62,10 +64,10 @@
 							elseif($options["poster_target"] == "custom") {
 								$target = $options["poster_link_custom_url"];
 							}
-							echo '<a href="' . $target . '" class="poster-link">';
+							echo '<a href="' . $target . '" class="poster-link" target="_blank">';
 						}
 					?>
-					<img src="<?php echo $movie["poster"]; ?>" alt="<?php echo $movie["title"]; ?>" class="movie-poster" width="<?php echo $options["poster_size_width"]; ?>" height="<?php echo $options["poster_size_height"]; ?>" />
+					<img src="<?php echo $movie["poster"]; ?>" alt="<?php echo $movie["title"]; ?>" class="movie-poster" width="<?php echo $options["poster_size_width"]; ?>" height="<?php echo $options["poster_size_height"]; ?>"/>
 					<?php
 						if($options["poster_target"] != "off") {
 							echo "</a>";
@@ -79,7 +81,9 @@
 			}
 			if($options["show_plot"] == "on") {
 				?>
-				<div class="movie-plot"><p><?php echo $movie["plot"]; ?></p></div>
+				<div class="movie-plot">
+					<p><?php echo $movie["plot"]; ?></p>
+				</div>
 			<?php
 			}
 			if($options["show_movie_title"] == "on" && $options["movie_title_position"] == "below_plot") {
@@ -87,7 +91,9 @@
 			}
 			if($options["bottom_text"]) {
 				?>
-				<div class="bottom-text"><p><?php echo $options["bottom_text"]; ?></p></div>
+				<div class="bottom-text">
+					<p><?php echo $options["bottom_text"]; ?></p>
+				</div>
 			<?php
 			}
 			if($options["show_movie_title"] == "on" && $options["movie_title_position"] == "bottom") {
@@ -115,6 +121,7 @@
 				"show_plot"              => "on",
 				"bottom_text"            => ""
 			);
+
 			return $default_options;
 		}
 
@@ -124,13 +131,14 @@
 		 *
 		 * @return array
 		 */
-		function update($new_options, $old_options) {
+		public function update($new_options, $old_options) {
 			$widget         = new widget_imdb_connector_movie();
 			$output_options = array();
 			/** Save each option */
 			foreach($widget->widget_default_options() as $option => $default_value) {
 				$output_options[$option] = $new_options[$option];
 			}
+
 			return $output_options;
 		}
 
@@ -139,7 +147,7 @@
 		 *
 		 * @return string|void
 		 */
-		function form($instance) {
+		public function form($instance) {
 			$checkboxes = array(
 				"show_movie_title",
 				"show_poster",
@@ -153,7 +161,7 @@
 				}
 				else {
 					$value = $default_value;
-					if(in_array($option, $checkboxes)) {
+					if(in_array($option, $checkboxes, false)) {
 						$value = "off";
 					}
 				}
@@ -166,27 +174,30 @@
 					<label for="<?php echo $this->get_field_id("widget-title"); ?>">
 						<?php _e("Widget title", "imdb_connector"); ?>:
 					</label>
-					<input type="text" id="<?php echo $this->get_field_id("widget-title"); ?>" name="<?php echo $this->get_field_name("widget_title"); ?>" value="<?php echo $values["widget_title"]; ?>" class="widefat" placeholder="<?php _e("Enter widget title...", "imdb_connector"); ?>" />
+					<input type="text" id="<?php echo $this->get_field_id("widget-title"); ?>" name="<?php echo $this->get_field_name("widget_title"); ?>" value="<?php echo $values["widget_title"]; ?>" class="widefat" placeholder="<?php _e("Enter widget title...", "imdb_connector"); ?>"/>
 				</p>
+
 				<p>
 					<label for="<?php echo $this->get_field_id("movie-title"); ?>">
 						<?php _e("Movie title or ID", "imdb_connector"); ?>:
 					</label>
-					<input type="text" id="<?php echo $this->get_field_id("movie-title"); ?>" name="<?php echo $this->get_field_name("movie_title"); ?>" value="<?php echo $values["movie_title"]; ?>" class="widefat" placeholder="<?php _e("Enter movie title or ID...", "imdb_connector"); ?>" />
+					<input type="text" id="<?php echo $this->get_field_id("movie-title"); ?>" name="<?php echo $this->get_field_name("movie_title"); ?>" value="<?php echo $values["movie_title"]; ?>" class="widefat" placeholder="<?php _e("Enter movie title or ID...", "imdb_connector"); ?>"/>
 				</p>
+
 				<p class="show-movie-title">
 					<input type="checkbox" name="<?php echo $this->get_field_name("show_movie_title"); ?>" id="<?php echo $this->get_field_id("show-movie-title"); ?>" value="on"<?php if($values["show_movie_title"] == "on") {
 						echo ' checked="checked"';
 					} ?> />
 					<label for="<?php echo $this->get_field_id("show-movie-title"); ?>"><?php _e("Show movie title", "imdb_connector"); ?></label>
 				</p>
+
 				<p class="movie-title-position" <?php if($values["show_movie_title"] != "on") {
 					echo ' hidden="hidden"';
 				} ?>>
 					<label for="<?php echo $this->get_field_id("movie-title-position"); ?>">
 						<?php _e("Movie title position", "imdb_connector"); ?>:
 					</label>
-					<br />
+					<br/>
 					<select name="<?php echo $this->get_field_name("movie_title_position"); ?>" id="<?php echo $this->get_field_id("movie-title-position"); ?>">
 						<option value="top"<?php if($values["movie_title_position"] == "top") {
 							echo ' selected="selected"';
@@ -216,6 +227,7 @@
 					} ?> />
 					<label for="<?php echo $this->get_field_id("show-poster"); ?>"><?php _e("Show poster", "imdb_connector"); ?></label>
 				</p>
+
 				<div class="poster-options"<?php if($values["show_poster"] != "on") {
 					echo ' hidden="hidden"';
 				} ?>>
@@ -223,7 +235,7 @@
 						<label for="<?php echo $this->get_field_id("poster-size-width"); ?>">
 							<?php _e("Poster size", "imdb_connector"); ?>:
 						</label>
-						<br />
+						<br/>
 						<label for="<?php echo $this->get_field_id("poster-size-width"); ?>">
 							<?php _e("Width", "imdb_connector"); ?>:
 						</label>
@@ -233,9 +245,10 @@
 						</label>
 						<input type="text" size="1" maxlength="3" name="<?php echo $this->get_field_name("poster_size_height"); ?>" id="<?php echo $this->get_field_id("poster-size-height"); ?>" value="<?php echo $values["poster_size_height"]; ?>">
 					</p>
+
 					<p class="poster-target">
-						<label for="<?php echo $this->get_field_id("poster-target"); ?>"><?php _e("Poster link", "imdb_connector"); ?></label>
-						<br />
+						<label for="<?php echo $this->get_field_id("poster-target"); ?>"><?php _e("Poster link", "imdb_connector"); ?>:</label>
+						<br/>
 						<select name="<?php echo $this->get_field_name("poster_target"); ?>" id="<?php echo $this->get_field_id("poster-target"); ?>">
 							<option value="off"<?php if($values["poster_target"] == "off") {
 								echo " selected";
@@ -269,8 +282,9 @@
 					} ?> />
 					<label for="<?php echo $this->get_field_id("show-plot"); ?>"><?php _e("Show plot", "imdb_connector"); ?></label>
 				</p>
+
 				<p>
-					<label for="<?php echo $this->get_field_id("bottom-text"); ?>"><?php _e("Bottom text", "imdb_connector"); ?></label>
+					<label for="<?php echo $this->get_field_id("bottom-text"); ?>"><?php _e("Bottom text", "imdb_connector"); ?>:</label>
 					<textarea rows="3" name="<?php echo $this->get_field_name("bottom_text"); ?>" id="<?php echo $this->get_field_id("bottom-text"); ?>" class="widefat" placeholder="<?php _e("Enter text that will be displayed in the widget bottom...", ""); ?>"><?php echo $values["bottom_text"]; ?></textarea>
 				</p>
 			</div>

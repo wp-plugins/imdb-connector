@@ -24,11 +24,11 @@
 }
 
 #imdb-connector-settings .message.success {
-	color: #4ACD70;
+	color: #4acd70;
 }
 
 #imdb-connector-settings .message.error {
-	color: #E75A54;
+	color: #e75a54;
 }
 
 #imdb-connector-settings .radio-description {

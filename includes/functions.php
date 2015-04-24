@@ -424,7 +424,7 @@
 						elseif(is_float($value)) {
 							$format = "%f";
 						}
-						array_push($formats, $format);
+						$formats[] = $format;
 					}
 
 					$wpdb->insert($table, $data, $formats);
@@ -437,7 +437,7 @@
 					$found = false;
 				}
 				else {
-					if(!file_exists($poster_path) && $movie_details["poster"] != "N/A") {
+					if($movie_details["poster"] != "N/A" && !file_exists($poster_path)) {
 						$handle = fopen($poster_path, "a");
 						fwrite($handle, file_get_contents($movie_details["poster"]));
 						fclose($handle);
@@ -528,7 +528,7 @@
 			if(!$result) {
 				continue;
 			}
-			array_push($results, $result);
+			$results[] = $result;
 		}
 
 		return (array)$results;
@@ -579,10 +579,10 @@
 		foreach($titles_or_ids as $title_or_id) {
 			$movie = get_imdb_connector_movie($title_or_id);
 			if(!$movie) {
-				array_push($not_found, $title_or_id);
+				$not_found[] = $title_or_id;
 				continue;
 			}
-			array_push($movies, $movie);
+			$movies[] = $movie;
 		}
 		/** Display error message if one or more movies could not be found */
 		if(count($not_found) >= 1) {
@@ -763,16 +763,20 @@
 	 *
 	 * @return bool
 	 */
-	function get_imdb_connector_debug_message($message, $type = "error") {
+	function get_imdb_connector_debug_message($message, $type = "") {
 		if(get_imdb_connector_setting("debug_mode") != "on") {
 			return false;
 		}
-		if($type == "error") {
-			$type = __("ERROR", "imdb_connector");
+		$the_type = $type;
+		if(!$type || $type == "error") {
+			$the_type = __("ERROR", "imdb_connector");
 		}
 		elseif($type == "warning") {
-			$type = __("WARNING", "imdb_connector");
+			$the_type = __("WARNING", "imdb_connector");
 		}
+
+		$type = $the_type;
+
 		$debug_file = get_imdb_connector_path() . "debug.log";
 		if(!$handle = fopen($debug_file, "a+", false)) {
 			return false;
@@ -935,10 +939,11 @@
 	 */
 	function get_imdb_connector_cached_movies($cache_location = "all", $type = "array") {
 		$movies = array();
+		$movie  = "";
 		if($cache_location == "all" || $cache_location == "local") {
 			foreach(glob(get_imdb_connector_cache_path() . "/*.tmp") as $file) {
-				$movie = json_decode(file_get_contents($file), true);
-				array_push($movies, $movie);
+				$movie    = json_decode(file_get_contents($file), true);
+				$movies[] = $movie;
 			}
 		}
 		if($cache_location == "all" || $cache_location == "database") {
@@ -958,7 +963,7 @@
 					$movie[$movie_detail] = $value;
 				}
 			}
-			array_push($movies, $movie);
+			$movies[] = $movie;
 		}
 		/** Convert array to stdClass object if set */
 		if($type == "object") {
