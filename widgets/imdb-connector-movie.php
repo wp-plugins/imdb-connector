@@ -5,9 +5,13 @@
 	 */
 	class widget_imdb_connector_movie extends WP_Widget {
 		public function widget_imdb_connector_movie() {
-			parent::__construct("imdb_connector_movie", __("IMDb Connector movie", "imdb_connector"), array(
-				"description" => __("Displays a specific movie and its details.", "imdb_connector")
-			));
+			parent::__construct(
+				"imdb_connector_movie",
+				__("IMDb Connector movie", "imdb_connector"),
+				array(
+					"description" => __("Displays a specific movie and its details.", "imdb_connector")
+				)
+			);
 		}
 
 		/**

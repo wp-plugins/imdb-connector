@@ -24,14 +24,12 @@ jQuery(document).ready(
 
 				jQuery.ajax(
 					{
-						type   : "get",
-						url    : fileUrl + "?action=delete_cache" + "&nonce=" + jQuery("#delete_cache_nonce").attr("value"),
-						success: function(response) {
-							button.show();
-							loadingIcon.hide();
-							jQuery("#delete-cache-container").find(".message.success").fadeIn();
-							jQuery("#deleted-files-number").text(response);
-						}
+						type: "get", url: fileUrl + "?action=delete_cache" + "&nonce=" + jQuery("#delete_cache_nonce").attr("value"), success: function(response) {
+						button.show();
+						loadingIcon.hide();
+						jQuery("#delete-cache-container").find(".message.success").fadeIn();
+						jQuery("#deleted-files-number").text(response);
+					}
 					}
 				);
 				setTimeout(
