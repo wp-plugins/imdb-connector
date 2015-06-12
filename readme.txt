@@ -1,8 +1,8 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.2.1
-Stable tag: 1.0
+Tested up to: 4.2.2
+Stable tag: 1.0.0
 Requires at least: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,9 +26,11 @@ In case you like this plugin, please consider [making a donation to Brian Fritz]
 
 If you have any other ideas for features, please don't hesitate to submit them by [sending me an e-mail](mailto:kolja.nolte@gmail.com) and I'll try my best to implement it in the next version. Your WP.org username will be added to the plugin's contributor list, of course (if you provide one).
 
-*Feel free to make IMDb Connector easier to use for users fron a non English speaking country by [help translating the plugin on Transifex](https://www.transifex.com/projects/p/plugin-imdb-connector/)*.
+*Feel free to make IMDb Connector easier to use for users fron a non English speaking country by [help translating the plugin on Transifex](https://www.transifex.com/projects/p/imdb-connector/)*.
 
 == Installation ==
+
+= How to install =
 
 1. Install IMDb Connector either through WordPress' native plugin installer found under *Plugins > Install* or copy the *imdb-connector* folder into the */wp-content/plugins/* directory of your WordPress installation.
 2. Make sure the folder */cache/* in the plugin's directory is writable (CHMOD 755).
@@ -49,8 +51,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 1.1.0 =
+* WordPress 4.2.2 compatibility.
+
 = 1.1 =
 * Added compatibility with WordPress 4.2.1.
+* Updated translations.
 
 = 1.0 =
 * Stable release.
@@ -126,6 +132,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+WordPress 4.2.2 compatibility.
 
 = 1.1 =
 Added compatibility with WordPress 4.2.1.

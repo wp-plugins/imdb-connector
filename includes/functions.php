@@ -326,6 +326,7 @@
 		if(substr($id_or_title, 0, 2) == "tt") {
 			$type = "i";
 		}
+
 		/** Sanitize $id_or_title to be URL friendly */
 		$id_or_title_url = imdb_connector_sanitize_url_title($id_or_title);
 		/** Build request API URL */
