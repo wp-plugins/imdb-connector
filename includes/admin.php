@@ -50,7 +50,7 @@
 							</th>
 							<td>
 								<input type="radio" name="allow_caching" id="allow-caching-on" class="first" value="on"<?php imdb_connector_check_setting("allow_caching", "on");
-									echo $invalid_cache_path; ?>  />
+									echo $invalid_cache_path; ?> />
 								<label for="allow-caching-on">
 									<?php echo __("Movie details and posters", "imdb_connector"); ?>
 								</label>
@@ -248,5 +248,5 @@
 				</p>
 			</form>
 		</div>
-	<?php
+		<?php
 	}

@@ -1,7 +1,7 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.2.2
+Tested up to: 4.2.3
 Stable tag: 1.0.0
 Requires at least: 3.0.1
 License: GPLv2 or later
@@ -50,6 +50,13 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 1.2.1 =
+* WordPress 4.2.3 compatibility.
+* Updated translations.
+
+= 1.2.0 =
+* Fixed bug.
 
 = 1.1.0 =
 * WordPress 4.2.2 compatibility.
@@ -132,6 +139,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Translations update.
+
+= 1.2.0 =
+Bug fixes.
 
 = 1.1.0 =
 WordPress 4.2.2 compatibility.
