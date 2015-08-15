@@ -53,6 +53,8 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 = 1.3.1 =
 * Fixed bug resulting in corrupt JSON file provided by omdbapi.com, making it unable for the plugin to work (thanks to [jcandsv](https://wordpress.org/support/profile/jcandsv)).
+* Added Font Awesome icons to plugin's settings page.
+* Small code improvements.
 
 = 1.3.0 =
 * Added more shortcode parameters and details. From now on you can display the runtime either as "runtime-minutes", "runtime-hours" or as "runtime-timestamp".
