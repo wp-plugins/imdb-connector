@@ -7,6 +7,37 @@
 	}
 
 	/**
+	 * Retrieves the plugin's version from the main file.
+	 *
+	 * @param string $main_file_name
+	 *
+	 * @since 1.3.1
+	 *
+	 * @return int
+	 */
+	function imdb_connector_get_plugin_version($main_file_name = "imdb-connector.php") {
+		$main_file_path = "";
+
+		$main_file_path .= plugin_dir_path(dirname(__FILE__));
+		$main_file_path .= $main_file_name;
+
+		if(!file_exists($main_file_path)) {
+			return 0;
+		}
+
+		$handle       = fopen($main_file_path, "r");
+		$file_content = fread($handle, 999);
+
+		preg_match("'Version\:(.*)\r'", $file_content, $version);
+
+		if(isset($version[1])) {
+			$version = $version[1];
+		}
+
+		return $version;
+	}
+
+	/**
 	 * Defines the plugin's settings and their default values.
 	 *
 	 * @internal param string $setting
@@ -45,7 +76,7 @@
 			$setting = "imdb_connector_" . $setting;
 		}
 		$settings = get_imdb_connector_default_settings();
-		if(!array_key_exists($setting, $settings, false)) {
+		if(!array_key_exists($setting, $settings)) {
 			return false;
 		}
 
@@ -90,7 +121,7 @@
 		$settings = get_imdb_connector_settings();
 		/** Use default value if setting is not set */
 		if($settings[$setting] == "") {
-			$setting = get_imdb_connector_default_settings($setting);
+			$setting = get_imdb_connector_default_setting($setting);
 		}
 		else {
 			$setting = $settings[$setting];
@@ -168,7 +199,7 @@
 	/**
 	 * Removes generated cache files.
 	 *
-	 * @since    0.4
+	 * @since  0.4
 	 *
 	 * @return bool
 	 */
@@ -201,7 +232,7 @@
 			}
 		}
 
-		return true;
+		return (bool)true;
 	}
 
 	/**
@@ -214,7 +245,7 @@
 	function get_imdb_connector_cache_path() {
 		$path = str_replace("\\", "/", plugin_dir_path(dirname(__FILE__))) . "cache";
 
-		return $path;
+		return (string)$path;
 	}
 
 	/**
@@ -295,7 +326,8 @@
 	}
 
 	/**
-	 * Returns the movie details.
+	 * Returns a movie including all details provided by
+	 * the unofficial API at omdbapi.com.
 	 *
 	 * @param       $id_or_title
 	 * @param array $options
@@ -332,9 +364,10 @@
 		/** Build request API URL */
 		$api_url .= $type . "=" . $id_or_title_url;
 
-		$movie_details = array();
+		$movie_details = (array)array();
 		$found         = true;
 
+		/** When caching feature has been activated */
 		if(get_imdb_connector_setting("allow_caching") != "off") {
 			$file_name            = substr(md5($id_or_title), 0, 8);
 			$cache_directory_path = get_imdb_connector_cache_path();
@@ -344,7 +377,7 @@
 			if($options["cache_location"] == "local") {
 				/** Display error message if the directory doesn't exist and can't be created automatically */
 				if(!is_dir($cache_directory_path) && !mkdir($cache_directory_path)) {
-					the_imdb_connector_debug_message(__("The cache directory does not exists and could not be created:") . " " . $cache_directory_path);
+					the_imdb_connector_debug_message(__("The cache directory does not exists and could not be created:", "imdb_connector") . " " . $cache_directory_path);
 
 					return false;
 				}
@@ -353,8 +386,10 @@
 					return false;
 				}
 				/** Get details from cached file if it exists */
-				if(file_exists($cache_directory_path . "/" . $file_name . ".tmp")) {
-					$movie_details = json_decode(file_get_contents($cache_file_path), true);
+				if(file_exists($cache_file_path)) {
+					$handle        = fopen($cache_file_path, "r");
+					$data          = fread($handle, 9999);
+					$movie_details = json_decode($data, true);
 				}
 				/** Get movie details online and create cache file */
 				else {
@@ -363,9 +398,13 @@
 					if(is_wp_error($data)) {
 						return false;
 					}
-					$movie_details = json_decode($data["body"], true);
+
+					$data          = $data["body"];
+					$data          = imdb_connector_fix_json_bug($data);
+					$movie_details = json_decode($data, true);
 					$movie_details = imdb_connector_sanitize_movie_details($movie_details);
-					fwrite($handle, stripslashes(json_encode($movie_details)));
+
+					fwrite($handle, json_encode($movie_details));
 					fclose($handle);
 				}
 			}
@@ -391,10 +430,12 @@
 				}
 				/** Movie doesn't exist in the database, so we add it */
 				elseif(get_imdb_connector_setting("create_database_table") == "on") {
-					$data          = wp_remote_get($api_url);
-					$movie_details = json_decode($data["body"], true);
-					$movie_details = imdb_connector_sanitize_movie_details($movie_details);
-					$data          = array(
+					$movie_details = imdb_connector_process_json($api_url);
+					if(!is_array($movie_details)) {
+						return false;
+					}
+
+					$data = array(
 						"title"      => $movie_details["title"],
 						"imdbid"     => $movie_details["imdbid"],
 						"year"       => $movie_details["year"],
@@ -434,10 +475,8 @@
 			/** Create movie poster if it doesn't exist yet */
 			$poster_path = $cache_directory_path . "/" . $file_name . ".jpg";
 			if(get_imdb_connector_setting("allow_caching") != "on_no_poster") {
-				if(!array_key_exists("title", $movie_details)) {
-					$found = false;
-				}
-				else {
+				if(array_key_exists("title", $movie_details)) {
+					$movie_details = (array)$movie_details;
 					if($movie_details["poster"] != "N/A" && !file_exists($poster_path)) {
 						$handle = fopen($poster_path, "a");
 						fwrite($handle, file_get_contents($movie_details["poster"]));
@@ -450,12 +489,27 @@
 		}
 		/** Get online movie details if cache is deactivated */
 		else {
-			$movie_details = json_encode(file_get_contents($api_url), true);
+			/** Fetch JSON data */
+			$data = wp_remote_get($api_url);
+
+			/** Stop if downloading JSON fails */
+			if(is_wp_error($data)) {
+				return false;
+			}
+
+			/** Specify JSON data and turn it into a proper movie details array */
+			$data          = $data["body"];
+			$data          = imdb_connector_fix_json_bug($data);
+			$movie_details = json_decode($data, true);
+			$movie_details = imdb_connector_sanitize_movie_details($movie_details);
+
+			/** Quick check if the array contains the necessary keys */
 			if(!array_key_exists("title", $movie_details)) {
 				$found = false;
 			}
 		}
 
+		/** Display error message in case the movie could not be found */
 		if(!$found) {
 			the_imdb_connector_debug_message(sprintf(__("The movie <strong>%s</strong> could not be found. Please check your spelling.", "imdb_connector"), $id_or_title));
 
@@ -624,6 +678,7 @@
 		if(!$movie) {
 			return false;
 		}
+
 		$deprecated = array(
 			"genre",
 			"country",
@@ -631,6 +686,7 @@
 			"director",
 			"writer"
 		);
+
 		if(in_array($detail, $deprecated, false)) {
 			$new_detail = $detail . "s";
 			if($detail == "country") {
@@ -656,7 +712,7 @@
 	 *
 	 * @since 0.2
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	function get_imdb_movie_detail($id_or_title, $detail = "title") {
 		_deprecated_function("get_imdb_movie_detail", "0.2", "get_imdb_connector_movie_detail($id_or_title, $detail)");
@@ -672,20 +728,68 @@
 	 * @return bool|string
 	 */
 	function imdb_connector_shortcode_movie_detail($attributes) {
-		$title  = "";
-		$detail = "";
-		$id     = "";
-
-		extract($attributes);
-
+		$title        = $attributes["title"];
+		$detail       = $attributes["detail"];
 		$movie_detail = "";
-		if($title || ($id && $detail)) {
-			if($id) {
-				$title = $id;
+
+		if(strstr($detail, "runtime")) {
+			$runtimes = array(
+				"runtime-minute"    => "minutes",
+				"runtime-hours"     => "hours",
+				"runtime-timestamp" => "timestamp"
+			);
+
+			$movie_details = get_imdb_movie_detail($title, "runtime");
+
+			foreach((array)$runtimes as $entered_detail => $array_value) {
+				if(!is_array($movie_details)) {
+					break;
+				}
+
+				if($detail === $entered_detail && isset($movie_details[$array_value])) {
+					$movie_detail = $movie_details[$array_value];
+					break;
+				}
+				else {
+					$movie_detail = $movie_details["minutes"];
+				}
 			}
-			$movie_detail = get_imdb_connector_movie_detail($title, $detail);
-			if(is_array($movie_detail)) {
-				$movie_detail = implode(", ", $movie_detail);
+		}
+		elseif($detail === "poster_image") {
+			$poster_url          = get_imdb_movie_detail($title, "poster");
+			$optional_attributes = array(
+				"width"  => 300,
+				"height" => 1000,
+				"link"   => ""
+			);
+
+			foreach((array)$optional_attributes as $attribute => $default_value) {
+				if(isset($attributes[$attribute])) {
+					$optional_attributes[$attribute] = $attributes[$attribute];
+				}
+			}
+
+			$movie_detail = "";
+
+			if($optional_attributes["link"]) {
+				$movie_detail .= '<a href="' . $optional_attributes["link"] . '" target="_blank">';
+			}
+
+			$movie_detail .= '<img src="' . $poster_url . '" width="' . $optional_attributes["width"] . '" height="' . $optional_attributes["height"] . '">';
+			if($optional_attributes["link"]) {
+				$movie_detail .= "</a>";
+			}
+		}
+		else {
+			$movie_details = get_imdb_movie_detail($title, $detail);
+			if(!$movie_details) {
+				return false;
+			}
+
+			$movie_detail = $movie_details;
+
+			if(is_array($movie_details)) {
+				$movie_detail = implode(", ", $movie_details);
 			}
 		}
 
@@ -808,7 +912,7 @@
 	 *
 	 * @param $movie_details
 	 *
-	 * @return array|mixed|string|void
+	 * @return array
 	 */
 	function imdb_connector_sanitize_movie_details($movie_details) {
 		$sanitized_movie_details = array();
@@ -818,6 +922,7 @@
 			$is_object     = true;
 			$movie_details = json_decode($movie_details, true);
 		}
+
 		foreach($movie_details as $movie_detail => $value) {
 			/** Convert detail identifiers to lowercase */
 			$movie_detail = strtolower($movie_detail);
@@ -887,7 +992,7 @@
 			$movie_details = json_encode($movie_details);
 		}
 
-		return $movie_details;
+		return (array)$movie_details;
 	}
 
 	/**
@@ -972,4 +1077,46 @@
 		}
 
 		return $movies;
+	}
+
+	/**
+	 * @param $json
+	 *
+	 * @since 1.3.1
+	 *
+	 * @return mixed
+	 */
+	function imdb_connector_fix_json_bug($json) {
+		return str_replace('"movie,', '"movie",', $json);
+	}
+
+	/**
+	 * @param           $api_url
+	 * @param bool|true $decode
+	 *
+	 * @param string    $type
+	 *
+	 * @since 1.3.1
+	 *
+	 * @return array|bool
+	 */
+	function imdb_connector_process_json($api_url, $decode = true, $type = "array") {
+		$data = wp_remote_get($api_url);
+		if(is_wp_error($data)) {
+			return false;
+		}
+
+		$array = true;
+		if($type !== "array") {
+			$array = false;
+		}
+
+		$data = $data["body"];
+		$data = str_replace('"movie,', '"movie",', $data);
+		if($decode) {
+			$data = json_decode($data, $array);
+			$data = imdb_connector_sanitize_movie_details($data);
+		}
+
+		return (array)$data;
 	}

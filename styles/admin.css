@@ -6,6 +6,10 @@
 	width: 70%;
 }
 
+#imdb-connector-settings .fa {
+	margin-right: 7px;
+}
+
 #imdb-connector-settings h2 {
 	margin-bottom: 30px;
 }

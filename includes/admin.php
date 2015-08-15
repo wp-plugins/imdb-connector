@@ -28,7 +28,10 @@
 		}
 		?>
 		<div class="wrap" id="imdb-connector-settings">
-			<h2><?php echo "IMDb Connector &raquo; " . get_admin_page_title(); ?></h2>
+			<h2>
+				<i class="fa fa-film"></i>
+				<?php echo "IMDb Connector &raquo; " . get_admin_page_title(); ?>
+			</h2>
 			<?php if($saved) { ?>
 				<div class="updated settings-error">
 					<p><?php _e("Settings have been saved.", "imdb_connector"); ?></p>
@@ -46,7 +49,11 @@
 									$invalid_cache_path = ' disabled="disabled"';
 								}
 							?>
-							<th scope="row"><label for="allow-caching-on"><?php _e("Caching", "imdb_connector"); ?></label>
+							<th scope="row">
+								<label for="allow-caching-on">
+									<i class="fa fa-files-o"></i>
+									<?php _e("Caching", "imdb_connector"); ?>
+								</label>
 							</th>
 							<td>
 								<input type="radio" name="allow_caching" id="allow-caching-on" class="first" value="on"<?php imdb_connector_check_setting("allow_caching", "on");
@@ -85,7 +92,12 @@
 							</td>
 						</tr>
 						<tr>
-							<th><label for="cache-location-local"><?php _e("Cache location", "imdb_connector"); ?></label></th>
+							<th>
+								<label for="cache-location-local">
+									<i class="fa fa-hdd-o"></i>
+									<?php _e("Cache location", "imdb_connector"); ?>
+								</label>
+							</th>
 							<td>
 								<input type="radio" name="cache_location" id="cache-location-local" class="first" value="local"<?php imdb_connector_check_setting("cache_location", "local"); ?> />
 								<label for="cache-location-local"><?php _e("As files on the server", "imdb_connector"); ?></label>
@@ -100,7 +112,12 @@
 							</td>
 						</tr>
 						<tr id="row-database-table">
-							<th><label for="database-table"><?php _e("Database table", "imdb_connector"); ?></label></th>
+							<th>
+								<label for="database-table">
+									<i class="fa fa-database"></i>
+									<?php _e("Database table", "imdb_connector"); ?>
+								</label>
+							</th>
 							<td>
 								<label for="database-table">
 									<?php
@@ -117,7 +134,10 @@
 						</tr>
 						<tr>
 							<th scope="row">
-								<label for="allow_shortcodes_on"><?php _e("Shortcodes", "imdb_connector"); ?></label>
+								<label for="allow_shortcodes_on">
+									<i class="fa fa-code"></i>
+									<?php _e("Shortcodes", "imdb_connector"); ?>
+								</label>
 							</th>
 							<td>
 								<input type="radio" name="allow_shortcodes" id="allow_shortcodes_on" class="first" value="on"<?php imdb_connector_check_setting("allow_shortcodes", "on"); ?> />
@@ -143,11 +163,25 @@
 
 										<p><?php _e('Displays the directors of <em>Taxi Driver</em>, separated by commas.', "imdb_connector"); ?></p>
 									</li>
+									<li>
+										<p><code>[imdb_movie_detail title="Pulp Fiction" detail="runtime-hours"]</code></p>
+
+										<p><?php _e("Shows the total runtime in hours.", "imdb_connector"); ?></p>
+									</li>
+									<li>
+										<p><code>[imdb_movie_detail title="Fight Club" detail="poster_image" width="320" height="470" link="http://www.google.com"]</code></p>
+
+										<p><?php _e("Generates a poster (cover) with specified dimensions and linked to google.com.", "imdb_connector"); ?></p>
+									</li>
 								</ul>
-							</td>
 						</tr>
 						<tr id="row-auto-delete">
-							<th><label for="auto-delete"><?php _e("Auto delete", "imdb_connector"); ?></label></th>
+							<th>
+								<label for="auto-delete">
+									<i class="fa fa-trash"></i>
+									<?php _e("Auto delete", "imdb_connector"); ?>
+								</label>
+							</th>
 							<td>
 								<label for="auto-delete"><?php echo sprintf(__("Deletes cache every %s", "imdb_connector"), ""); ?></label>
 								<select name="auto_delete" id="auto-delete">
@@ -190,7 +224,10 @@
 						</tr>
 						<tr id="row-deactivation-actions">
 							<th>
-								<label for="deactivation-actions"><?php _e("Deactivation actions", "imdb_connector"); ?></label>
+								<label for="deactivation-actions">
+									<i class="fa fa-power-off"></i>
+									<?php _e("Deactivation actions", "imdb_connector"); ?>
+								</label>
 							</th>
 							<td>
 								<?php
@@ -224,7 +261,12 @@
 							</td>
 						</tr>
 						<tr id="row-debug-mode">
-							<th><label for="debug-mode-on"><?php _e("Debug mode", "imdb_connector"); ?></label></th>
+							<th>
+								<label for="debug-mode-on">
+									<i class="fa fa-bug"></i>
+									<?php _e("Debug mode", "imdb_connector"); ?>
+								</label>
+							</th>
 							<td>
 								<input type="radio" id="debug-mode-on" class="first" name="debug_mode" value="on"<?php imdb_connector_check_setting("debug_mode", "on"); ?> />
 								<label for="debug-mode-on"><?php _e("On", "imdb_connector"); ?></label>
@@ -240,9 +282,11 @@
 					<br/>
 					<?php wp_nonce_field("save_settings", "save_settings_nonce"); ?>
 					<input type="hidden" name="saved" value="true"/>
-					<input type="submit" name="save_settings" class="button-primary" value="<?php _e("Save changes", "imdb_connector"); ?>"/>
+					<a href="#" id="submit-link" class="button-primary">
+						<i class="fa fa-floppy-o"></i>
+						<?php _e("Save Changes", KLIBRARY_TEXTDOMAIN); ?>
+					</a>
 				</p>
-
 				<p>
 					<small><?php _e('Found an error? Help making IMDb Connector better by <a href="http://www.wordpress.org/support/plugin/imdb-connector#postform" target="_blank">quickly reporting the bug</a>.', "imdb_connector"); ?></small>
 				</p>

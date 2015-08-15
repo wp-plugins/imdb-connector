@@ -1,9 +1,29 @@
 jQuery(document).ready(
 	function() {
 		"use strict";
+
 		/** Only apply scripts if we're on the IMDb Connector settings page */
 		if(jQuery("#imdb-connector-settings").length < 1) {
 			return false;
+		}
+
+		jQuery("#submit-link").click(
+			function() {
+				jQuery(this).parents("form").submit();
+				return false;
+			}
+		);
+
+		var updatedSelector;
+
+		updatedSelector = jQuery(".updated");
+
+		if(updatedSelector.length >= 1) {
+			setTimeout(
+				function() {
+					updatedSelector.fadeOut("slow");
+				}, 5000
+			);
 		}
 
 		/**

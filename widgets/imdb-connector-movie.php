@@ -78,7 +78,7 @@
 						}
 					?>
 				</div>
-			<?php
+				<?php
 			}
 			if($options["show_movie_title"] == "on" && $options["movie_title_position"] == "below_poster") {
 				echo $movie_title;
@@ -88,7 +88,7 @@
 				<div class="movie-plot">
 					<p><?php echo $movie["plot"]; ?></p>
 				</div>
-			<?php
+				<?php
 			}
 			if($options["show_movie_title"] == "on" && $options["movie_title_position"] == "below_plot") {
 				echo $movie_title;
@@ -98,7 +98,7 @@
 				<div class="bottom-text">
 					<p><?php echo $options["bottom_text"]; ?></p>
 				</div>
-			<?php
+				<?php
 			}
 			if($options["show_movie_title"] == "on" && $options["movie_title_position"] == "bottom") {
 				echo $movie_title;
@@ -292,7 +292,7 @@
 					<textarea rows="3" name="<?php echo $this->get_field_name("bottom_text"); ?>" id="<?php echo $this->get_field_id("bottom-text"); ?>" class="widefat" placeholder="<?php _e("Enter text that will be displayed in the widget bottom...", ""); ?>"><?php echo $values["bottom_text"]; ?></textarea>
 				</p>
 			</div>
-		<?php
+			<?php
 		}
 	}
 

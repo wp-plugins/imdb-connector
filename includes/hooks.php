@@ -1,9 +1,7 @@
 <?php
-	/**
-	 * Stop script when the file is called directly.
-	 */
+	/** Prevents this file from being called directly */
 	if(!function_exists("add_action")) {
-		return false;
+		return;
 	}
 
 	/**
@@ -25,7 +23,12 @@
 	 */
 	function load_imdb_connector_styles_and_scripts() {
 		/** Default widgets styles */
-		wp_enqueue_style("imdb-connector-widgets-style", get_imdb_connector_url() . "styles/widgets.css");
+		wp_enqueue_style(
+			"imdb-connector-style-widget",
+			get_imdb_connector_url() . "styles/widgets.css",
+			array(),
+			imdb_connector_get_plugin_version()
+		);
 	}
 
 	add_action("wp_enqueue_scripts", "load_imdb_connector_styles_and_scripts");
@@ -36,8 +39,28 @@
 	 * @since 0.1
 	 */
 	function load_imdb_connector_admin_styles_and_scripts() {
-		wp_enqueue_style("imdb-connector-admin-style", get_imdb_connector_url() . "styles/admin.css");
-		wp_enqueue_script("imdb-connector-admin-scripts", get_imdb_connector_url() . "scripts/admin.js");
+		/** Styles */
+		wp_enqueue_style(
+			"imdb-connector-style-admin",
+			get_imdb_connector_url() . "styles/admin.css",
+			array(),
+			imdb_connector_get_plugin_version()
+		);
+
+		wp_enqueue_style(
+			"imdb-connector-style-font-awesome",
+			"//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+			array(),
+			"4.4.0"
+		);
+
+		/** Scripts */
+		wp_enqueue_script(
+			"imdb-connector-script-admin",
+			get_imdb_connector_url() . "scripts/admin.js",
+			array("jquery"),
+			imdb_connector_get_plugin_version()
+		);
 	}
 
 	add_action("admin_enqueue_scripts", "load_imdb_connector_admin_styles_and_scripts");

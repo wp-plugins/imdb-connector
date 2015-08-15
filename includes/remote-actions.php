@@ -6,12 +6,12 @@
 	 */
 
 	/** Stop script if file is called directly or with no valid request */
-	if(!isset($_GET) || !count($_GET)) {
+	if(!isset($_GET["nonce"], $_GET["action"])) {
 		return false;
 	}
 
 	/** Include WordPress */
-	require("../../../../wp-load.php");
+	require(dirname(__FILE__) . "/../../../../wp-load.php");
 
 	/** "Delete cache" function */
 	if($_GET["action"] == "delete_cache" && isset($_GET["nonce"]) && wp_verify_nonce($_GET["nonce"], "delete_cache")) {

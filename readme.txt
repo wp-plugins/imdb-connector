@@ -1,7 +1,7 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.2.3
+Tested up to: 4.2.4
 Stable tag: 1.0.0
 Requires at least: 3.0.1
 License: GPLv2 or later
@@ -50,6 +50,14 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 1.3.1 =
+* Fixed bug resulting in corrupt JSON file provided by omdbapi.com, making it unable for the plugin to work (thanks to [jcandsv](https://wordpress.org/support/profile/jcandsv)).
+
+= 1.3.0 =
+* Added more shortcode parameters and details. From now on you can display the runtime either as "runtime-minutes", "runtime-hours" or as "runtime-timestamp".
+* Re-programmed some sections.
+* Updated translations.
 
 = 1.2.1 =
 * WordPress 4.2.3 compatibility.
@@ -139,6 +147,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Important hotfix.
+
+= 1.3.0 =
+New shortcode detail parameters: "runtime-minutes", "runtime-hours" and "runtime-timestamp".
 
 = 1.2.1 =
 Translations update.
