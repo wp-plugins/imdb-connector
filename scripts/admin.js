@@ -1,23 +1,21 @@
 jQuery(document).ready(
 	function() {
-		"use strict";
+		/** Defining global variables */
+		var updatedSelector      = jQuery(".updated");
+		var deleteCacheContainer = jQuery("#delete-cache-container");
+		var deleteCache          = jQuery("#delete-cache");
+		var showExamples         = jQuery("#show-examples");
+		var hideExamples         = jQuery("#hide-examples");
+		var examplesShown;
 
 		/** Only apply scripts if we're on the IMDb Connector settings page */
 		if(jQuery("#imdb-connector-settings").length < 1) {
 			return false;
 		}
 
-		jQuery("#submit-link").click(
-			function() {
-				jQuery(this).parents("form").submit();
-				return false;
-			}
-		);
-
-		var updatedSelector;
-
-		updatedSelector = jQuery(".updated");
-
+		/**
+		 * Fade out updated message after 5 seconds.
+		 */
 		if(updatedSelector.length >= 1) {
 			setTimeout(
 				function() {
@@ -27,90 +25,67 @@ jQuery(document).ready(
 		}
 
 		/**
-		 * "Delete cache" function
+		 * Delete cache function.
 		 */
-		jQuery("#delete-cache").click(
+		deleteCache.click(
 			function() {
-				var fileUrl, button, loadingIcon, messages;
+				var loadingIcon = jQuery("#delete-cache-loading-icon");
+				var messages    = deleteCacheContainer.find(".message").fadeOut();
+				var fileUrl     = jQuery("#remote-actions-url").attr("value");
+				var oldValue    = deleteCache.attr("value");
+				var newValue    = oldValue.replace(/[0-9]/, "0");
 
-				fileUrl = jQuery("#remote-actions-url").attr("value");
-				button = jQuery(this);
-				loadingIcon = jQuery("#delete-cache-loading-icon");
-				messages = jQuery("#delete-cache-container").find(".message").fadeOut();
-
-				button.hide();
+				deleteCache.hide();
 				messages.hide();
 				loadingIcon.fadeIn();
 
+				/** Calling AJAX and process deletion of cached files */
 				jQuery.ajax(
 					{
-						type: "get", url: fileUrl + "?action=delete_cache" + "&nonce=" + jQuery("#delete_cache_nonce").attr("value"), success: function(response) {
-						button.show();
-						loadingIcon.hide();
-						jQuery("#delete-cache-container").find(".message.success").fadeIn();
-						jQuery("#deleted-files-number").text(response);
-					}
+						type:    "get",
+						url:     fileUrl + "?action=delete_cache" + "&nonce=" + jQuery("#delete_cache_nonce").attr("value"),
+						success: function(response) {
+							deleteCache.show();
+							loadingIcon.hide();
+							deleteCacheContainer.find(".message.success").fadeIn();
+							jQuery("#deleted-files-number").text(response);
+							deleteCache.attr("value", newValue);
+						}
 					}
 				);
+
+				/** Fade out message after 10 seconds */
 				setTimeout(
 					function() {
-						jQuery("#delete-cache-container").find(".message").fadeOut();
+						deleteCacheContainer.find(".message").fadeOut();
 					}, 10000
 				);
 			}
 		);
 
 		/**
-		 * "Show shortcodes" function
+		 * Shows/hides shortcode examples.
 		 */
-		jQuery("#show-shortcode-examples").click(
+		jQuery("#toggle-examples-buttons").find("button").click(
 			function() {
-				jQuery("#shortcode-examples").slideToggle();
+				var shortcodeExamples = jQuery("#shortcode-examples");
+
+				if(examplesShown) {
+					shortcodeExamples.slideUp();
+					showExamples.show();
+					hideExamples.hide();
+					examplesShown = false;
+				}
+				else {
+					shortcodeExamples.slideDown();
+					showExamples.hide();
+					hideExamples.show();
+					examplesShown = true;
+				}
 				return false;
 			}
 		);
 
-		/**
-		 * Widget configuration
-		 */
-		jQuery(".show-poster input").click(
-			function() {
-				var showPoster, posterOptions;
-
-				showPoster = jQuery(this);
-				posterOptions = jQuery(".poster-options");
-				if(showPoster.attr("checked") === "checked") {
-					posterOptions.slideDown();
-				} else {
-					posterOptions.slideUp();
-				}
-			}
-		);
-		jQuery(".show-movie-title input").click(
-			function() {
-				var showMovieTitle, movieTitlePosition;
-
-				showMovieTitle = jQuery(this);
-				movieTitlePosition = jQuery(".movie-title-position");
-				if(showMovieTitle.attr("checked") === "checked") {
-					movieTitlePosition.slideDown();
-				} else {
-					movieTitlePosition.slideUp();
-				}
-			}
-		);
-		jQuery(".poster-target select").change(
-			function() {
-				var selectedOption, customUrl;
-
-				selectedOption = jQuery(this).find("option:selected").attr("value");
-				customUrl = jQuery(".poster-target-custom-url");
-				customUrl.hide();
-				if(selectedOption === "custom") {
-					customUrl.slideDown();
-				}
-			}
-		);
 		return true;
 	}
 );

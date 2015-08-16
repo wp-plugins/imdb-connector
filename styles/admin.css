@@ -2,10 +2,6 @@
  * Settings page
  */
 
-#imdb-connector-settings {
-	width: 70%;
-}
-
 #imdb-connector-settings .fa {
 	margin-right: 7px;
 }
@@ -23,8 +19,8 @@
 }
 
 #imdb-connector-settings .message {
-	font-size:   12px;
 	font-weight: bold;
+	font-size:   12px;
 }
 
 #imdb-connector-settings .message.success {
@@ -44,30 +40,36 @@
 }
 
 #imdb-connector-settings #delete-cache-container {
-	height:     30px;
 	margin-top: 10px;
+	height:     30px;
 }
 
 #imdb-connector-settings #delete-cache-container #delete-cache-loading-icon {
-	left:     30px;
 	position: relative;
 	top:      5px;
+	left:     30px;
 }
 
-#imdb-connector-settings #shortcode-examples ul li {
-	margin-bottom: 10px;
+#imdb-connector-settings #toggle-examples-buttons {
+	margin-top: 10px;
+}
+
+#imdb-connector-settings #toggle-examples-buttons #hide-examples {
+	display: none;
+}
+
+#imdb-connector-settings #shortcode-examples .example {
+	margin-bottom: 20px;
 }
 
 #imdb-connector-settings #shortcode-examples p,
 #imdb-connector-settings #shortcode-examples code {
-	font-size: 12px;
-
 }
 
 #imdb-connector-settings #movie-list {
+	width:  50%;
 	height: 80px;
 	resize: vertical;
-	width:  50%;
 }
 
 #imdb-connector-settings #movie-list.expanded {

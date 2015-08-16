@@ -51,6 +51,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 
 == Changelog ==
 
+= 1.3.2 =
+* Changed several function names to be deprecated in order to make it more organized. All functions now start with ´imdb_connector_*´.
+* Cleaned up and optimized main.js.
+* Small face lifting on the settings page.
+* Removed debug mode.
+
 = 1.3.1 =
 * Fixed bug resulting in corrupt JSON file provided by omdbapi.com, making it unable for the plugin to work (thanks to [jcandsv](https://wordpress.org/support/profile/jcandsv)).
 * Added Font Awesome icons to plugin's settings page.
@@ -103,7 +109,7 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Updated translations.
 
 = 0.4.2 =
-* Added function PHP function `get_imdb_connector_cached_movies()`.
+* Added function PHP function `imdb_connector_get_cached_movies()`.
 * Added [nonce protection for "delete cache" script](http://codex.wordpress.org/WordPress_Nonces) to prevent misuse.
 * Added nonce protection for settings page.
 * Updated translations.
@@ -123,7 +129,7 @@ If you have any other ideas for features, please don't hesitate to submit them b
 = 0.3 =
 * Added option to chose if the movie detail cache should be stored locally on in MySQL.
 * Added an option to the settings page that defines whether the movie poster should be cached or not.
-* Added "format" option array to get_imdb_connector_movie() function that defines whether the output should be an "array" or "object".
+* Added "format" option array to imdb_get_connector_movie() function that defines whether the output should be an "array" or "object".
 * Added translations and updated existing ones.
 * The movie details "genre", "director", "writer", "actors", "country" and "language" are split up in arrays.
 * The movie detail "runtime" is now an array containing "timestamp", "minutes" and "hours".
@@ -137,7 +143,7 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Fixed "headers already sent" bug on plugin activation.
 * Fixed bug that prevented translations from being loaded.
 * Fixed [bug](https://wordpress.org/support/topic/imdb-connector-dont-import-some-movies-informations) when a string run through `wptexturize()` is used for the IMDb title ([thanks to 7movies](https://wordpress.org/support/profile/7movies)).
-* Changed `get_imdb_*` functions to `get_imdb_connector_*` to avoid conflicts with other plugins.
+* Changed `get_imdb_*` functions to `imdb_get_connector_*` to avoid conflicts with other plugins.
 * Updated documentation.
 * Rebuild movie widget.
 * Restructured plugin files.
@@ -149,6 +155,9 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+**IMPORTANT**: In this version most functions are now deprecated, meaning that they still work under their old name but you should change them to the new one if you use them independently in your blog. Every IMDb Connector function starts with ´imdb_connector_*´. If you experience any problems, please report them either in the [support forum](https://wordpress.org/support/plugin/imdb-connector) or directly via [e-mail](mailto:kolja.nolte@gmail.com) so I can fix it as soon as possible.
 
 = 1.3.1 =
 Important hotfix.

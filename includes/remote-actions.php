@@ -11,11 +11,16 @@
 	}
 
 	/** Include WordPress */
-	require(dirname(__FILE__) . "/../../../../wp-load.php");
+	$path = dirname(__FILE__) . "/../../../../wp-load.php";
+	if(!file_exists($path)) {
+		return;
+	}
+
+	require($path);
 
 	/** "Delete cache" function */
-	if($_GET["action"] == "delete_cache" && isset($_GET["nonce"]) && wp_verify_nonce($_GET["nonce"], "delete_cache")) {
-		$deleted_files = count(get_imdb_connector_cached_movies());
-		delete_imdb_connector_cache();
+	if($_GET["action"] === "delete_cache" && isset($_GET["nonce"]) && wp_verify_nonce($_GET["nonce"], "delete_cache")) {
+		$deleted_files = count(imdb_connector_get_cached_movies());
+		imdb_connector_delete_cache();
 		echo $deleted_files;
 	}

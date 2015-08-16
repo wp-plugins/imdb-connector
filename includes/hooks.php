@@ -25,7 +25,7 @@
 		/** Default widgets styles */
 		wp_enqueue_style(
 			"imdb-connector-style-widget",
-			get_imdb_connector_url() . "styles/widgets.css",
+			imdb_connector_get_url() . "styles/widgets.css",
 			array(),
 			imdb_connector_get_plugin_version()
 		);
@@ -42,7 +42,7 @@
 		/** Styles */
 		wp_enqueue_style(
 			"imdb-connector-style-admin",
-			get_imdb_connector_url() . "styles/admin.css",
+			imdb_connector_get_url() . "styles/admin.css",
 			array(),
 			imdb_connector_get_plugin_version()
 		);
@@ -57,7 +57,7 @@
 		/** Scripts */
 		wp_enqueue_script(
 			"imdb-connector-script-admin",
-			get_imdb_connector_url() . "scripts/admin.js",
+			imdb_connector_get_url() . "scripts/admin.js",
 			array("jquery"),
 			imdb_connector_get_plugin_version()
 		);
@@ -86,7 +86,7 @@
 	 * @return bool
 	 */
 	function init_imdb_connector_auto_delete() {
-		$setting = get_imdb_connector_setting("auto_delete");
+		$setting = imdb_connector_get_setting("auto_delete");
 		if(!$setting || $setting == "off") {
 			return false;
 		}
@@ -119,37 +119,20 @@
 		}
 		/** Delete the cache and update the last deleted date */
 		if($delete) {
-			delete_imdb_connector_cache();
+			imdb_connector_delete_cache();
 			update_option("imdb_connector_last_deleted_date", $date_now);
 		}
 
 		return true;
 	}
 
-	add_action("admin_init", "init_imdb_connector_auto_delete");
-	add_action("init", "init_imdb_connector_auto_delete");
+	add_action("plugins_loaded", "init_imdb_connector_auto_delete");
 
-	/**
-	 * Adds "imdbrating" column to existing database.
-	 *
-	 * @since 0.4.3
-	 *
-	 * @return bool
-	 */
-	function imdb_connector_extend_table() {
-		/*$option = get_option("imdb_connector_added_imdbrating_column");
-		if($option) {
-			return false;
-		}*/
-		global $wpdb;
-		$table = $wpdb->prefix . get_imdb_connector_setting("database_table");
-
-		$has_column = $wpdb->query("SHOW COLUMNS FROM $table LIKE 'imdbrating'");
-		if(!$has_column && $wpdb->query("ALTER TABLE $table ADD imdbrating TEXT NOT NULL AFTER imdbvotes")) {
-			return update_option("imdb_connector_added_imdbrating_column", "true");
+	function imdb_connector_add_shortcode() {
+		/** Only add if set on settings page */
+		if(imdb_connector_get_setting("allow_shortcodes") == "on") {
+			add_shortcode("imdb_movie_detail", "imdb_connector_shortcode_movie_detail");
 		}
-
-		return false;
 	}
 
-	add_action("admin_init", "imdb_connector_extend_table");
+	add_action("init", "imdb_connector_add_shortcode");

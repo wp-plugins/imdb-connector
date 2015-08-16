@@ -195,9 +195,7 @@
 					<label for="<?php echo $this->get_field_id("show-movie-title"); ?>"><?php _e("Show movie title", "imdb_connector"); ?></label>
 				</p>
 
-				<p class="movie-title-position" <?php if($values["show_movie_title"] != "on") {
-					echo ' hidden="hidden"';
-				} ?>>
+				<p class="movie-title-position">
 					<label for="<?php echo $this->get_field_id("movie-title-position"); ?>">
 						<?php _e("Movie title position", "imdb_connector"); ?>:
 					</label>
@@ -226,15 +224,13 @@
 					</select>
 				</p>
 				<p class="show-poster">
-					<input type="checkbox" name="<?php echo $this->get_field_name("show_poster"); ?>" id="<?php echo $this->get_field_id("show-poster"); ?>" value="on"<?php if($values["show_poster"] == "on") {
+					<input type="checkbox" name="<?php echo $this->get_field_name("show_poster"); ?>" class="show-poster-checkbox" id="<?php echo $this->get_field_id("show-poster"); ?>" value="on"<?php if($values["show_poster"] == "on") {
 						echo ' checked="checked"';
 					} ?> />
 					<label for="<?php echo $this->get_field_id("show-poster"); ?>"><?php _e("Show poster", "imdb_connector"); ?></label>
 				</p>
 
-				<div class="poster-options"<?php if($values["show_poster"] != "on") {
-					echo ' hidden="hidden"';
-				} ?>>
+				<div class="poster-options">
 					<p>
 						<label for="<?php echo $this->get_field_id("poster-size-width"); ?>">
 							<?php _e("Poster size", "imdb_connector"); ?>:
@@ -268,16 +264,14 @@
 							} ?>><?php _e("Custom", "imdb_connector"); ?></option>
 						</select>
 					</p>
-					<p class="poster-target-custom-url"<?php if($values["poster_target"] != "custom") {
-						echo ' hidden="hidden"';
-					} ?>>
+					<p class="poster-target-custom-url">
 						<?php
 							$custom_url = $values["poster_link_custom_url"];
 						?>
 						<label for="<?php echo $this->get_field_id("poster-link-custom-url"); ?>">
 							<?php _e("Custom URL", "imdb_connector"); ?>:
 						</label>
-						<input type="url" placeholder="<?php _e("Enter custom URL...", "imdb_connector"); ?>" class="widefat" maxlength="3" name="<?php echo $this->get_field_name("poster_link_custom_url"); ?>" id="<?php echo $this->get_field_id("poster-link-custom-url"); ?>" value="<?php echo $custom_url; ?>">
+						<input type="url" placeholder="<?php _e("Enter custom URL...", "imdb_connector"); ?>" class="widefat" name="<?php echo $this->get_field_name("poster_link_custom_url"); ?>" id="<?php echo $this->get_field_id("poster-link-custom-url"); ?>" value="<?php echo $custom_url; ?>">
 					</p>
 				</div>
 				<p>

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: IMDb Connector\n"
-"POT-Creation-Date: 2015-08-16 02:51+0700\n"
-"PO-Revision-Date: 2015-08-16 02:51+0700\n"
+"POT-Creation-Date: 2015-08-17 03:25+0700\n"
+"PO-Revision-Date: 2015-08-17 03:25+0700\n"
 "Last-Translator: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language-Team: Kolja Nolte <kolja.nolte@gmail.com>\n"
 "Language: en\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: includes/admin.php:37
-msgid "Settings have been saved."
+msgid "The settings have been successfully saved."
 msgstr ""
 
 #: includes/admin.php:55
@@ -32,8 +32,8 @@ msgstr ""
 msgid "Only movie details"
 msgstr ""
 
-#: includes/admin.php:70 includes/admin.php:146 includes/admin.php:274
-#: widgets/imdb-connector-movie.php:259
+#: includes/admin.php:70 includes/admin.php:146
+#: widgets/imdb-connector-movie.php:255
 msgid "Off"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Shortcodes"
 msgstr ""
 
-#: includes/admin.php:144 includes/admin.php:272
+#: includes/admin.php:144
 msgid "On"
 msgstr ""
 
@@ -112,134 +112,102 @@ msgid ""
 "Provides <a href=\"%s\" target=\"_blank\">shortcodes</a> to easily insert "
 "movie details into your posts or pages.<br />For a full list of available "
 "parameters, please see the <a href=\"http://www.koljanolte.com/wordpress/"
-"plugins/imdb-connector/\" target=\"_blank\">official documentation</a>."
+"plugins/imdb-connector/#shortcodes\" target=\"_blank\">official "
+"documentation</a>."
 msgstr ""
 
-#: includes/admin.php:153
+#: includes/admin.php:155
 msgid "Show examples"
 msgstr ""
 
-#: includes/admin.php:159
-msgid "Displays the release year of <em>The Shawshank Redemption</em>."
-msgstr ""
-
-#: includes/admin.php:164
-msgid "Displays the directors of <em>Taxi Driver</em>, separated by commas."
+#: includes/admin.php:160
+msgid "Hide examples"
 msgstr ""
 
 #: includes/admin.php:169
-msgid "Shows the total runtime in hours."
+msgid "Shows the release year of <em>The Shawshank Redemption</em>."
 msgstr ""
 
-#: includes/admin.php:174
+#: includes/admin.php:173
+msgid "Lists the directors of <em>Taxi Driver</em>, separated by commas."
+msgstr ""
+
+#: includes/admin.php:177
+msgid ""
+"Displays the runtime in hour of <em>Pulp Fiction</em>. You can also use "
+"<em>runtime-minutes</em>."
+msgstr ""
+
+#: includes/admin.php:181
 msgid ""
 "Generates a poster (cover) with specified dimensions and linked to google."
 "com."
 msgstr ""
 
-#: includes/admin.php:182
+#: includes/admin.php:200
 msgid "Auto delete"
 msgstr ""
 
-#: includes/admin.php:186
+#: includes/admin.php:204
 #, php-format
 msgid "Deletes cache every %s"
 msgstr ""
 
-#: includes/admin.php:191
+#: includes/admin.php:209
 msgid "never"
 msgstr ""
 
-#: includes/admin.php:195
+#: includes/admin.php:213
 msgid "hours"
 msgstr ""
 
-#: includes/admin.php:199 includes/admin.php:203
+#: includes/admin.php:217 includes/admin.php:221
 msgid "days"
 msgstr ""
 
-#: includes/admin.php:207
+#: includes/admin.php:225
 msgid "months"
 msgstr ""
 
-#: includes/admin.php:222
-msgid "Automatically deletes all cached files (database and files)."
+#: includes/admin.php:240
+msgid ""
+"Automatically deletes all cached files (database and files) to keep "
+"information up to date."
 msgstr ""
 
-#: includes/admin.php:229
+#: includes/admin.php:247
 msgid "Deactivation actions"
 msgstr ""
 
-#: includes/admin.php:236
+#: includes/admin.php:254
 msgid "Delete MySQL cache"
 msgstr ""
 
-#: includes/admin.php:240
+#: includes/admin.php:258
 msgid "Delete cached movie detail files"
 msgstr ""
 
-#: includes/admin.php:244
+#: includes/admin.php:262
 msgid "Delete cached poster files"
 msgstr ""
 
-#: includes/admin.php:248
+#: includes/admin.php:266
 msgid "Delete plugin settings"
 msgstr ""
 
-#: includes/admin.php:260
+#: includes/admin.php:278
 msgid "Actions being executed when you deactivate IMDb Connector."
 msgstr ""
 
-#: includes/admin.php:267
-msgid "Debug mode"
-msgstr ""
-
-#: includes/admin.php:276
-msgid "Displays errors and warnings."
-msgstr ""
-
-#: includes/admin.php:287
+#: includes/admin.php:290
 msgid "Save Changes"
 msgstr ""
 
-#: includes/admin.php:291
+#: includes/admin.php:294
 msgid ""
 "Found an error? Help making IMDb Connector better by <a href=\"http://www."
 "wordpress.org/support/plugin/imdb-connector#postform\" target=\"_blank"
 "\">quickly reporting the bug</a>."
-msgstr ""
-
-#: includes/functions.php:380
-msgid "The cache directory does not exists and could not be created:"
-msgstr ""
-
-#: includes/functions.php:514
-#, php-format
-msgid ""
-"The movie <strong>%s</strong> could not be found. Please check your spelling."
-msgstr ""
-
-#: includes/functions.php:559
-#, php-format
-msgid "No movies could be found with the term(s) <strong>%s</strong>."
-msgstr ""
-
-#: includes/functions.php:644
-msgid "The following movie(s) could not be found. Please verify spelling:"
-msgstr ""
-
-#: includes/functions.php:699
-#, php-format
-msgid ""
-"The parameter <strong>%s</strong> was not found among the movie details."
-msgstr ""
-
-#: includes/functions.php:877
-msgid "ERROR"
-msgstr ""
-
-#: includes/functions.php:880
-msgid "WARNING"
 msgstr ""
 
 #: includes/hooks.php:75
@@ -274,74 +242,74 @@ msgstr ""
 msgid "Show movie title"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:202
+#: widgets/imdb-connector-movie.php:200
 msgid "Movie title position"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:209
+#: widgets/imdb-connector-movie.php:207
 msgid "Top"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:214
+#: widgets/imdb-connector-movie.php:212
 msgid "Below poster"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:219
+#: widgets/imdb-connector-movie.php:217
 msgid "Below plot"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:224
+#: widgets/imdb-connector-movie.php:222
 msgid "Bottom"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:232
+#: widgets/imdb-connector-movie.php:230
 msgid "Show poster"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:240
+#: widgets/imdb-connector-movie.php:236
 msgid "Poster size"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:244
+#: widgets/imdb-connector-movie.php:240
 msgid "Width"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:248
+#: widgets/imdb-connector-movie.php:244
 msgid "Height"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:254
+#: widgets/imdb-connector-movie.php:250
 msgid "Poster link"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:262
+#: widgets/imdb-connector-movie.php:258
 msgid "To cover file"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:265
+#: widgets/imdb-connector-movie.php:261
 msgid "To movie on IMDb.com"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:268
+#: widgets/imdb-connector-movie.php:264
 msgid "Custom"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:278
+#: widgets/imdb-connector-movie.php:272
 msgid "Custom URL"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:280
+#: widgets/imdb-connector-movie.php:274
 msgid "Enter custom URL..."
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:287
+#: widgets/imdb-connector-movie.php:281
 msgid "Show plot"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:291
+#: widgets/imdb-connector-movie.php:285
 msgid "Bottom text"
 msgstr ""
 
-#: widgets/imdb-connector-movie.php:292
+#: widgets/imdb-connector-movie.php:286
 msgid "Enter text that will be displayed in the widget bottom..."
 msgstr ""
