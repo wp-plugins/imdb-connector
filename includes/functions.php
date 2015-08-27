@@ -6,6 +6,11 @@
 	 * Created on 2015-08-17 02:18 UTC+7
 	 */
 
+	/** Prevents this file from being called directly */
+	if(!function_exists("add_action")) {
+		return;
+	}
+
 	/**
 	 * Returns the URL to the plugin directory.
 	 *
@@ -88,6 +93,58 @@
 	 */
 	function imdb_connector_the_cache_url() {
 		echo imdb_connector_get_cache_url();
+	}
+
+	/**
+	 * @param array $user_options
+	 * @param array $default_options
+	 * @param bool  $allow_empty
+	 *
+	 * @return array
+	 */
+	function imdb_connector_merge_options(array $user_options = array(), array $default_options = array(), $allow_empty = true) {
+		$merged_options = array();
+		foreach($default_options as $default_option_name => $default_option_value) {
+			/** Check if the user has set the current option  */
+			if(isset($user_options[$default_option_name])) {
+				$user_option_value = $user_options[$default_option_name];
+				/** Use default option value if $allow_empty is off */
+				$merged_option_value = $user_option_value;
+				if(!$allow_empty && !$user_option_value) {
+					$merged_option_value = $default_option_value;
+				}
+			}
+			/** Use default option value if user option is not set  */
+			else {
+				if(!isset($default_option_value)) {
+					$default_option_value = "";
+				}
+				$merged_option_value = $default_option_value;
+			}
+			/** Add current option and its value to the output array */
+			$merged_options[$default_option_name] = $merged_option_value;
+		}
+
+		return $merged_options;
+	}
+
+	/**
+	 * @param array $attributes
+	 * @param bool  $allow_empty
+	 *
+	 * @return string
+	 */
+	function imdb_connector_get_html_attributes(array &$attributes, $allow_empty = false) {
+		$html_attributes = "";
+
+		foreach((array)$attributes as $attribute => $value) {
+			if(!$allow_empty && !$value) {
+				continue;
+			}
+			$html_attributes .= " " . $attribute . '="' . $value . '"';
+		}
+
+		return $html_attributes;
 	}
 
 	/**
@@ -446,7 +503,7 @@
 				else {
 					$query .= "WHERE title = '$id_or_title'";
 				}
-				$movie_details = $wpdb->get_row($query, "ARRAY_A");
+				$movie_details = (array)$wpdb->get_row($query, "ARRAY_A");
 				/** Read row and convert serialized strings back to array */
 				if($movie_details) {
 					foreach($movie_details as $movie_detail => $value) {
@@ -561,7 +618,7 @@
 	function imdb_connector_search_movie($id_or_title) {
 		$api_url = "http://www.omdbapi.com/?s=" . imdb_connector_sanitize_url_title($id_or_title);
 		$results = file_get_contents($api_url);
-		$results = json_decode($results, true);
+		$results = (array)json_decode($results, true);
 		if(array_key_exists("Response", $results) && $results["Response"] == "False") {
 			return false;
 		}
@@ -679,76 +736,67 @@
 	/**
 	 * @param $attributes
 	 *
-	 * @since 0.1
-	 *
-	 * @return bool|string
+	 * @return string
 	 */
 	function imdb_connector_shortcode_movie_detail($attributes) {
-		$title        = $attributes["title"];
-		$detail       = $attributes["detail"];
-		$movie_detail = "";
+		if(!isset($attributes["title"], $attributes["detail"])) {
+			return "";
+		}
 
-		if(strstr($detail, "runtime")) {
-			$runtimes = array(
-				"runtime-minute"    => "minutes",
-				"runtime-hours"     => "hours",
-				"runtime-timestamp" => "timestamp"
+		$attribute_title  = $attributes["title"];
+		$attribute_detail = $attributes["detail"];
+
+		$movie_details = imdb_connector_get_movie($attribute_title);
+		if(!$movie_details) {
+			return "";
+		}
+
+		$output = "";
+
+		if($attribute_detail === "poster_image") {
+			$img_default_attributes = array(
+				"src"    => $movie_details["poster"],
+				"width"  => 0,
+				"height" => 0,
+				"alt"    => "",
+				"class"  => ""
 			);
 
-			$movie_details = imdb_connector_get_movie_detail($title, "runtime");
+			$img_attributes = imdb_connector_merge_options($attributes, $img_default_attributes);
+			$img_attributes = imdb_connector_get_html_attributes($img_attributes);
+			$img            = "<img $img_attributes />";
 
-			foreach((array)$runtimes as $entered_detail => $array_value) {
-				if(!is_array($movie_details)) {
-					break;
-				}
+			$output = $img;
 
-				if($detail === $entered_detail && isset($movie_details[$array_value])) {
-					$movie_detail = $movie_details[$array_value];
-					break;
-				}
-				else {
-					$movie_detail = $movie_details["minutes"];
-				}
+			if(isset($attributes["href"]) || (isset($attributes["linked"]) && $attributes["linked"] === "true")) {
+				$a_default_attributes = array(
+					"href"   => "http://www.imdb.com/title/" . $movie_details["imdbid"] . "/",
+					"target" => "_blank"
+				);
+
+				$a_attributes = imdb_connector_merge_options($attributes, $a_default_attributes, false);
+				$a_attributes = imdb_connector_get_html_attributes($a_attributes);
+				$output       = "<a $a_attributes>$output</a>";
 			}
 		}
-		elseif($detail === "poster_image") {
-			$poster_url          = imdb_connector_get_movie_detail($title, "poster");
-			$optional_attributes = array(
-				"width"  => 300,
-				"height" => 1000,
-				"link"   => ""
-			);
-
-			foreach((array)$optional_attributes as $attribute => $default_value) {
-				if(isset($attributes[$attribute])) {
-					$optional_attributes[$attribute] = $attributes[$attribute];
+		elseif(strstr($attribute_detail, "runtime")) {
+			if($attribute_detail === "runtime") {
+				$output = $movie_details["runtime"]["hours"];
+				if(isset($attributes["format"])) {
+					$output = date($attributes["format"], $movie_details["runtime"]["timestamp"]);
 				}
 			}
-
-			$movie_detail = "";
-
-			if($optional_attributes["link"]) {
-				$movie_detail .= '<a href="' . $optional_attributes["link"] . '" target="_blank">';
-			}
-
-			$movie_detail .= '<img src="' . $poster_url . '" width="' . $optional_attributes["width"] . '" height="' . $optional_attributes["height"] . '">';
-			if($optional_attributes["link"]) {
-				$movie_detail .= "</a>";
+			elseif($attribute_detail === "runtime-minutes") {
+				$output = $movie_details["runtime"]["minutes"];
 			}
 		}
-		else {
-			$movie_details = imdb_connector_get_movie_detail($title, $detail);
-			if(!$movie_details) {
-				return false;
-			}
-
-			$movie_detail = $movie_details;
-
-			if(is_array($movie_details)) {
-				$movie_detail = implode(", ", $movie_details);
+		elseif(array_key_exists($attribute_detail, $movie_details)) {
+			$output = $movie_details[$attribute_detail];
+			if(is_array($output)) {
+				$output = implode(", ", $output);
 			}
 		}
 
-		return $movie_detail;
+		return (string)$output;
 	}
 

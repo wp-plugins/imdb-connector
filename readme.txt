@@ -1,7 +1,7 @@
 === IMDb Connector ===
 Contributors: thaikolja
 Tags: imdb, imdb connector, imdb database, movie, movies, movie details, movie database
-Tested up to: 4.2.4
+Tested up to: 4.3
 Stable tag: 1.0.0
 Requires at least: 3.0.1
 License: GPLv2 or later
@@ -50,6 +50,15 @@ If you have any other ideas for features, please don't hesitate to submit them b
 3. The widget configuration on the admin interface.
 
 == Changelog ==
+
+= 1.3.4 =
+* Removed use of deprecated function in movie widget (thanks to [MajorFusion](https://wordpress.org/support/profile/majorfusion)).
+
+= 1.3.3 =
+* [Extended shortcodes](https://wordpress.org/support/topic/movies-tagline-runtime-format-poster-embed-shortcode) which now accepts several more attributes to let users customize the output even more individually. Please see the ["Shortcodes" area in the official documentation](http://www.koljanolte.com/wordpress/plugins/imdb-connector/#Shortcodes) for an overview of all available attributes.
+* Added compatibility for WordPress 4.3 that has just been released.
+* Added "Reset Settings" button to settings page.
+* Fixed bug resulting in an error when activating IMDb Connector.
 
 = 1.3.2 =
 * Changed several function names to be deprecated in order to make it more organized. All functions now start with ´imdb_connector_*´.
@@ -155,6 +164,12 @@ If you have any other ideas for features, please don't hesitate to submit them b
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.4 =
+Fixed movie widget.
+
+= 1.3.3 =
+The shortcodes have been extended and accept now several more attributes to let users customize the output individually. For a full list of available attributes and examples, please see the ["Shortcodes" section in the official documentation](http://www.koljanolte.com/wordpress/plugins/imdb-connector/#Shortcodes).
 
 = 1.3.2 =
 **IMPORTANT**: In this version most functions are now deprecated, meaning that they still work under their old name but you should change them to the new one if you use them independently in your blog. Every IMDb Connector function starts with ´imdb_connector_*´. If you experience any problems, please report them either in the [support forum](https://wordpress.org/support/plugin/imdb-connector) or directly via [e-mail](mailto:kolja.nolte@gmail.com) so I can fix it as soon as possible.

@@ -76,6 +76,14 @@
 	height: 200px;
 }
 
+#imdb-connector-settings .submit-area {
+	margin-top: 25px;
+}
+
+#imdb-connector-settings .submit-area .button-primary {
+	margin-right: 10px;
+}
+
 /**
  * Widget configuration
  */

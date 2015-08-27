@@ -1,9 +1,7 @@
 <?php
-	/**
-	 * Stop script when the file is called directly.
-	 */
+	/** Prevents this file from being called directly */
 	if(!function_exists("add_action")) {
-		return false;
+		return;
 	}
 
 	/**
@@ -25,6 +23,16 @@
 				update_option($setting, $_POST[$field]);
 			}
 			$saved = true;
+		}
+		elseif(isset($_GET["action"], $_GET["nonce"]) && $_GET["action"] === "reset_settings" && wp_verify_nonce($_GET["nonce"], "reset_settings")) {
+			foreach((array)imdb_connector_get_default_settings() as $setting => $default_value) {
+				update_option($setting, $default_value);
+			}
+			?>
+			<div class="updated">
+				<p><?php _e("All settings have been successfully resetted to default.", "imdb_connector"); ?></p>
+			</div>
+			<?php
 		}
 		?>
 		<div class="wrap" id="imdb-connector-settings">
@@ -289,6 +297,11 @@
 						<i class="fa fa-floppy-o"></i>
 						<?php _e("Save Changes", "imdb_connector"); ?>
 					</button>
+
+					<a href="<?php echo wp_nonce_url(get_admin_url() . "/options-general.php?page=imdb-connector&action=reset_settings", "reset_settings", "nonce"); ?>" class="button" id="reset-button">
+						<i class="fa fa-trash"></i>
+						<?php _e("Reset to Default Settings", "imdb_connector"); ?>
+					</a>
 				</div>
 				<p>
 					<small><?php _e('Found an error? Help making IMDb Connector better by <a href="http://www.wordpress.org/support/plugin/imdb-connector#postform" target="_blank">quickly reporting the bug</a>.', "imdb_connector"); ?></small>

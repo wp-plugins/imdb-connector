@@ -13,6 +13,14 @@ jQuery(document).ready(
 			return false;
 		}
 
+		jQuery("#reset-button").click(
+			function() {
+				if(!confirm("Do you really want to reset all settings wit te default values?")) {
+					return false;
+				}
+			}
+		);
+
 		/**
 		 * Fade out updated message after 5 seconds.
 		 */

@@ -46,7 +46,7 @@
 			echo $options["widget_title"];
 			echo $sidebar_info["after_title"];
 
-			$movie = get_imdb_connector_movie($options["movie_title"]);
+			$movie = imdb_connector_get_movie($options["movie_title"]);
 
 			/** Start building the widget content */
 			$movie_title = "";

@@ -1,9 +1,7 @@
 <?php
-	/**
-	 * Stop script when the file is called directly.
-	 */
+	/** Prevents this file from being called directly */
 	if(!function_exists("add_action")) {
-		return false;
+		return;
 	}
 
 	/**
@@ -39,8 +37,6 @@
 
 	/**
 	 * Defines the plugin's settings and their default values.
-	 *
-	 * @internal param string $setting
 	 *
 	 * @since    0.1
 	 *
