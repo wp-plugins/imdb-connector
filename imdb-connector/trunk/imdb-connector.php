@@ -13,6 +13,7 @@
 	/** Prevents this file from being called directly */
 	if(!function_exists("add_action")) {
 		return;
+
 	}
 
 	/** Include plugin files */
