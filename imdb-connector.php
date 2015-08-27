@@ -2,7 +2,7 @@
 	/**
 	 * Plugin name:  IMDb Connector
 	 * Plugin URI:   http://www.koljanolte.com/wordpress/plugins/imdb-connector/
-	 * Description:  A simple plugin that allows you to easily retreieve movie details from IMDb.com.
+	 * Description:  A simple plugin that allows you to easily retrieve movie details from IMDb.com.
 	 * Version:      1.3.4
 	 * Author:       Kolja Nolte
 	 * Author URI:   http://www.koljanolte.com
